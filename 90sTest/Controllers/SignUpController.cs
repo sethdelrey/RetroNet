@@ -24,28 +24,17 @@ namespace _90sTest.Controllers
             return View("SignUp");
         }
 
-        public IActionResult SignUp(UserModel data)
+        public IActionResult Submit(SignUpModel data)
         {
             int i = 0;
             if (ModelState.IsValid)
             {
                 // Put user in database
                 i = 25;
-                return View("Index");
+                return View("SignUp");
             }
             System.Console.WriteLine(i);
             return View("SignUp", data);
-        }
-
-        public IActionResult SignIn(UserModel data)
-        {
-            if (ModelState.IsValid)
-            {
-                return View("Index");
-            }
-
-            return View("Signup", data);
-
         }
     }
 }

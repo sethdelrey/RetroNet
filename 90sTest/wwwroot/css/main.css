@@ -54,6 +54,6 @@ header {
     font-size: 15px;
 }
 
-.SignUpForm {
-    text-align: center;
+label {
+    font-size: 1rem;
 }

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using _90sTest.Models;
 using _90sTest.Entities;
+using _90sTest.Data;
 
 namespace _90sTest.Controllers
 {
@@ -21,11 +20,20 @@ namespace _90sTest.Controllers
 
         public IActionResult Index()
         {
+            using (var context = new FeedContext())
+            {
+                var postList = context.Post.ToList();
+                var userList = context.User.ToList();
 
-            Post[] posts = new Post[] { new Post("Test", new User("SethDelRey", "Seth", "Richard"), DateTime.Now), 
-                new Post("Test 2", new User("alpaulex", "Alex", "Marc"), DateTime.Now) };
+                var feed = new FeedModel() { Users = userList.ToArray(), Posts = postList.ToArray() };
 
-            return View("Index", new PostsModel { Posts = posts});
+                return View("Index", feed);
+            }
+
+/*            Post[] posts = new Post[] { new Post("Test", "SethDelRey", DateTime.Now), 
+                new Post("Test 2", "alpaulex", DateTime.Now) };
+
+            return View("Index", new PostsModel { Posts = posts});*/
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -36,8 +44,20 @@ namespace _90sTest.Controllers
 
         public IActionResult Submit(PostsModel data)
         {
-            // Add post to Database
-            return View("Index");
+            using (var context = new FeedContext())
+            {
+                // Add new post to db
+                context.Post.Add(new Post(data.NewPost.Content, "alpaulex", DateTime.Now));
+                context.SaveChanges();
+
+                // Get posts and users from db
+                var postList = context.Post.ToList();
+                var userList = context.User.ToList();
+
+                var feed = new FeedModel() { Users = userList.ToArray(), Posts = postList.ToArray() };
+
+                return View(feed);
+            }
         }
     }
 }

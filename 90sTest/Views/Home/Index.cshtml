@@ -1,4 +1,4 @@
-﻿@model PostsModel
+﻿@model FeedModel
 @{
     ViewData["Title"] = "Home";
 }
@@ -36,7 +36,7 @@
                     New Post
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form asp-action="Submit" asp-controller="Home">
                         <div class="card-text">
                             @Html.TextAreaFor(model => model.NewPost.Content, new { @class = "form-control", @rows = 4 })
                         </div>
@@ -52,7 +52,12 @@
 
                 <div class="card">
                     <div class="card-header">
-                        @post.Creator.GetFullName() (<a href="profileRat">@@@post.Creator.Username</a>)
+                        @foreach (_90sTest.Entities.User user in Model.Users) { if (user.Username == post.Username)
+                            {
+                                @user.GetFullName()
+                                break;
+                            }
+                        }    (<a href="profileRat">@@@post.Username</a>)
                     </div>
                     <div class="card-body">
                         <p class="card-text">

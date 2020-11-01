@@ -1,4 +1,4 @@
-﻿@model LoginSignUpModel
+﻿@model SignUpModel
 @{
     ViewData["Title"] = "Signup";
 }
@@ -24,42 +24,52 @@
                 </button>
             </a>
         </div>
-        <div class="SignUpForm">
-            <div class="col-sm-12 mb-4 mb-lg-0 feed">
-                <div class="card">
+        <div class="container" style="margin:auto; width:50%;">
+            <div class="row">
+                <div class="card card-tertiary">
                     <div class="card-header">
-                        Sign-Up
+                        Welcome to 90s Net
                     </div>
                     <div class="card-body">
-                        <form method="post" action="/SignUpSuccess">
-                            <div class="form-group">
-                                <label asp-for="UserModel.Username">Username:</label>
-                                <input asp-for="UserModel.Username" class="from-control" />
-                                <span asp-validation-for="UserModel.Username" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="UserModel.FirstName">First Name:</label>
-                                <input asp-for="UserModel.FirstName" class="from-control" />
-                                <span asp-validation-for="UserModel.FirstName" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="UserModel.LastName">Last Name:</label>
-                                <input asp-for="UserModel.LastName" class="from-control" />
-                                <span asp-validation-for="UserModel.LastName" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="UserModel.Email">Email:</label>
-                                <input asp-for="UserModel.Email" class="from-control" />
-                                <span asp-validation-for="UserModel.Email" class="text-danger"></span>
-                            </div>
+                        Congratulations on your choice of 90s Net, the newest and easiest way to connect to your friends.
+                        <br>
+                        <br>
+                        Please fill out this information and you will start connecting soon.
+                        <br>
 
-                            <input type="submit" value="Submit">
+                        <br>
+                        <form asp-action="Submit" asp-controller="SignUp" method="post">
+                            <label asp-for="Name">Name: </label>
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                            <br>
+                            <input asp-for="Name" />
+                            <br>
+                            <label asp-for="Email">Email: </label>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <br>
+                            <input asp-for="Email" />
+                            <br>
+                            <label asp-for="Username">Username: </label>
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                            <br>
+                            <input asp-for="Username" />
+                            <br>
+                            <label asp-for="Password">Password: </label>
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                            <br>
+                            <input asp-for="Password">
+                            <br>
+                            <br />
+                            <input type="submit">
                         </form>
+                        <br>
+                        <div>
+                            Have an account? <a asp-controller="SignIn" asp-action="Index">Login here.</a>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
-        
-    </div>
 </div>
 

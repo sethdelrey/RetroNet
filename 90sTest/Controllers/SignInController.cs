@@ -20,20 +20,20 @@ namespace _90sTest.Controllers
 
         public IActionResult Index()
         {
-            return View("SignUp");
+            return View("SignIn");
         }
 
-        public IActionResult Submit(UserModel data)
+        public IActionResult Submit(SignInModel data)
         {
-            int i = 0;
+            int i = 0; 
             if (ModelState.IsValid)
             {
                 // Put user in database
                 i = 25;
-                return View("Index");
+                return View("Home/Index");
             }
             System.Console.WriteLine(i);
-            return View("SignUp", data);
+            return View("SignIn", data);
         }
     }
 }
