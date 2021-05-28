@@ -2,38 +2,37 @@
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using _90sTest.Models;
 using _90sTest.Entities;
 using _90sTest.Data;
+using Microsoft.AspNetCore.Identity;
+using _90sTest.Areas.Identity.Data;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using _90sTest.Data.Extension;
+using Microsoft.EntityFrameworkCore;
 
 namespace _90sTest.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<RetroNetUser> _userManager;
+        private readonly RetroNetContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(UserManager<RetroNetUser> userManager, RetroNetContext context)
         {
-            _logger = logger;
+            _userManager = userManager;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            using (var context = new FeedContext())
-            {
-                var postList = context.Post.ToList();
-                var userList = context.User.ToList();
+            var postList = _context.Posts.Include(post => post.User).ToList();
 
-                var feed = new FeedModel() { Users = userList.ToArray(), Posts = postList.ToArray() };
+                var feed = new FeedModel() {Posts = postList.ToArray()};
 
                 return View("Index", feed);
-            }
-
-/*            Post[] posts = new Post[] { new Post("Test", "SethDelRey", DateTime.Now), 
-                new Post("Test 2", "alpaulex", DateTime.Now) };
-
-            return View("Index", new PostsModel { Posts = posts});*/
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -42,22 +41,22 @@ namespace _90sTest.Controllers
             return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Submit(PostsModel data)
+        public async Task<IActionResult> SubmitAsync(PostsModel data)
         {
-            using (var context = new FeedContext())
-            {
-                // Add new post to db
-                context.Post.Add(new Post(data.NewPost.Content, "alpaulex", DateTime.Now));
-                context.SaveChanges();
+            var userId = User.GetLoggedInUserId<string>(); // Specify the type of your UserId;
 
-                // Get posts and users from db
-                var postList = context.Post.ToList();
-                var userList = context.User.ToList();
+            RetroNetUser user = await _userManager.FindByIdAsync(User.GetLoggedInUserId<string>());
 
-                var feed = new FeedModel() { Users = userList.ToArray(), Posts = postList.ToArray() };
+            // Add new post to db
+            _context.Posts.Add(new Post(data.NewPost.Content, user, DateTime.Now));
+            _context.SaveChanges();
 
-                return View(feed);
-            }
+            // Get posts and users from db
+            var postList = _context.Posts.Include(post => post.User).ToList();
+
+            var feed = new FeedModel() { Posts = postList.ToArray() };
+
+            return View("Index", feed);
         }
     }
 }

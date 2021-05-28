@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _90sTest.Areas.Identity.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,11 +13,13 @@ namespace _90sTest.Entities
         public int PostId { get; set; }
         public string Content { get; set; }
 
-        public string Username { get; set; }
+        public RetroNetUser User { get; set; }
 
         public int Likes { get; set; }
 
         public DateTime Date { get; set; }
+
+        public ICollection<Likes> LikedPosts { get; set; }
 
         public Post()
         {
@@ -28,11 +31,11 @@ namespace _90sTest.Entities
             Content = content;
         }
 
-        public Post(string content, string username, DateTime date)
+        public Post(string _content, RetroNetUser _user, DateTime _date)
         {
-            Content = content;
-            Username = username;
-            Date = date;
+            Content = _content;
+            User = _user;
+            Date = _date;
         }
     }
 }

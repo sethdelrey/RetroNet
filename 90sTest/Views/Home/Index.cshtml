@@ -52,12 +52,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        @foreach (_90sTest.Entities.User user in Model.Users) { if (user.Username == post.Username)
-                            {
-                                @user.GetFullName()
-                                break;
-                            }
-                        }    (<a href="profileRat">@@@post.Username</a>)
+                        @post.User.Name (<a href="profileRat">@@@post.User.UserName</a>)
                     </div>
                     <div class="card-body">
                         <p class="card-text">
