@@ -226,3 +226,4 @@ C:\Users\holde\Documents\GitHub\RetroNet\RetroNet\obj\Debug\net5.0\RetroNet.dll
 C:\Users\holde\Documents\GitHub\RetroNet\RetroNet\obj\Debug\net5.0\ref\RetroNet.dll
 C:\Users\holde\Documents\GitHub\RetroNet\RetroNet\obj\Debug\net5.0\RetroNet.pdb
 C:\Users\holde\Documents\GitHub\RetroNet\RetroNet\obj\Debug\net5.0\RetroNet.genruntimeconfig.cache
+C:\Users\holde\Documents\GitHub\RetroNet\RetroNet\obj\Debug\net5.0\Razor\Views\Follow\Follow.cshtml.g.cs
