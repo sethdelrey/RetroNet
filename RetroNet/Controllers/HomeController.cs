@@ -31,7 +31,7 @@ namespace _90sTest.Controllers
         {
             var postList = _context.Posts.Include(post => post.User).ToList();
 
-                var feed = new FeedModel() {Posts = postList.ToArray()};
+                var feed = new FeedModel() { Posts = postList.OrderByDescending(p => p.Date).ToArray() };
 
                 return View("Index", feed);
         }
@@ -55,7 +55,7 @@ namespace _90sTest.Controllers
             // Get posts and users from db
             var postList = _context.Posts.Include(post => post.User).ToList();
 
-            var feed = new FeedModel() { Posts = postList.ToArray() };
+            var feed = new FeedModel() { Posts = postList.OrderByDescending(p => p.Date).ToArray() };
 
             return View("Index", feed);
         }
@@ -73,7 +73,7 @@ namespace _90sTest.Controllers
 
             _context.SaveChanges();
 
-            var feed = new FeedModel() { Posts = postList.ToArray() };
+            var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
             return View("Index", feed);
         }

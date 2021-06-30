@@ -8,5 +8,7 @@ namespace _90sTest.Models
         public Post[] Posts { get; set; }
 
         public Post NewPost { get; set; }
+
+        public RetroNetUser CurrentUser { get; set; }
     }
 }

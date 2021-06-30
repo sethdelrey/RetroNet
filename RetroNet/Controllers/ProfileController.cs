@@ -31,7 +31,7 @@ namespace _90sTest.Controllers
                 usersPosts = _context.Posts.Select(p => p).Where(p => p.User.UserName == username).ToList()
             };
 
-            return View("Profile", data);
+            return View("Index", data);
         }
     }
 }
