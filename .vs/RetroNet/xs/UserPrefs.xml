@@ -1,0 +1,51 @@
+﻿<Properties StartupConfiguration="{56EA0391-278A-49AC-AC97-86BD8CAED51D}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="RetroNet/Views/Profile/Index.cshtml">
+    <Files>
+      <File FileName="RetroNet/Views/Home/Index.cshtml" Line="11" Column="50" />
+      <File FileName="RetroNet/Views/Profile/Index.cshtml" Line="50" Column="14" />
+      <File FileName="RetroNet/Models/ProfileModel.cs" Line="19" Column="1" />
+      <File FileName="RetroNet/Areas/Identity/Data/RetroNetUser.cs" Line="33" Column="10" />
+      <File FileName="RetroNet/Areas/Identity/Data/RetroNetContext.cs" Line="16" Column="24" />
+      <File FileName="RetroNet/Entities/Post.cs" Line="16" Column="31" />
+      <File FileName="RetroNet/Controllers/ProfileController.cs" Line="33" Column="1" />
+      <File FileName="RetroNet/Models/PostsModel.cs" Line="1" Column="1" />
+      <File FileName="RetroNet/Controllers/HomeController.cs" Line="27" Column="10" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="RetroNet" expanded="True">
+            <Node name="RetroNet" expanded="True">
+              <Node name="Controllers" expanded="True" />
+              <Node name="Data" expanded="True" />
+              <Node name="Entities" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Home" expanded="True" />
+                <Node name="Profile" expanded="True">
+                  <Node name="Index.cshtml" selected="True" />
+                </Node>
+              </Node>
+              <Node name="appsettings.json" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <Debugger.DebugSourceFolders>
+    <String>/Users/sethrichard/Library/Caches/VisualStudio/8.0/Symbols/mysql-net/MySqlConnector/36f961890cf18bed199793262ce4df13cffa6bd9</String>
+  </Debugger.DebugSourceFolders>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/sethrichard/Documents/GitHub/RetroNet/RetroNet/Areas/Identity/Pages/Account/Login.cshtml.cs" relfile="RetroNet/Areas/Identity/Pages/Account/Login.cshtml.cs" line="83" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.RetroNet PreferredExecutionTarget="/Applications/Google Chrome.app" />
+</Properties>

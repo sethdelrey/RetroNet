@@ -1,0 +1,75 @@
+@model ProfileModel
+@{ ViewData["Title"] = "Profile"; }
+
+<div class="container" style="margin-top:30px;">
+    <div class="row">
+        <div class="col-sm-3" id="sidenav">
+            <a href="#">
+                <button class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" type="button">
+                    <span class="btn-text">Feed</span>
+                </button>
+            </a>
+            <br>
+            <a href="#">
+                <button class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" type="button">
+                    <span class="btn-text">Friends</span>
+                </button>
+            </a>
+            <br>
+            <a href="#">
+                <button class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" type="button">
+                    <span class="btn-text">Profile</span>
+                </button>
+            </a>
+            <br>
+            <a href="#">
+                <button class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" type="button">
+                    <span class="btn-text">Settings</span>
+                </button>
+            </a>
+        </div>
+        <div class="col-sm-9 mb-4 mb-lg-0 feed">
+            <div class="card">
+                <div class="card-header">
+                    @Model.user.Name (@@@Model.user.UserName)
+                </div>
+                <div class="card-body">
+                    <div>
+                        This is where a users bio would go, need to add that.
+                    </div>
+                    <div>
+                        Following: <a href="#">100</a>
+                        <br />
+                        Followers: <a href="#">100</a>
+
+                    </div>
+                </div>
+            </div>
+            <br />
+            @foreach (_90sTest.Entities.Post post in Model.usersPosts)
+            {
+
+                <div class="card">
+                    <div class="card-header">
+                        @post.User.Name (@@@Model.user.UserName)
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            @post.Content
+                        </p>
+                        <div class="d-flex justify-content-end mt-3">
+                            <div>@post.Date.ToString()</div>
+                            &nbsp;
+                            <div>@post.Likes Likes</div>
+                            &nbsp;
+                            <button class="btn btn-sm mr-2 btn-primary border-dark" type="button">
+                                <span class="btn-text">Like</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            }
+        </div>
+    </div>
+</div>

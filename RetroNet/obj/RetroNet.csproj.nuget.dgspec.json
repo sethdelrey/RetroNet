@@ -1,27 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\holde\\Documents\\GitHub\\RetroNet\\RetroNet\\RetroNet.csproj": {}
+    "/Users/sethrichard/Documents/GitHub/RetroNet/RetroNet/RetroNet.csproj": {}
   },
   "projects": {
-    "C:\\Users\\holde\\Documents\\GitHub\\RetroNet\\RetroNet\\RetroNet.csproj": {
+    "/Users/sethrichard/Documents/GitHub/RetroNet/RetroNet/RetroNet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\holde\\Documents\\GitHub\\RetroNet\\RetroNet\\RetroNet.csproj",
+        "projectUniqueName": "/Users/sethrichard/Documents/GitHub/RetroNet/RetroNet/RetroNet.csproj",
         "projectName": "RetroNet",
-        "projectPath": "C:\\Users\\holde\\Documents\\GitHub\\RetroNet\\RetroNet\\RetroNet.csproj",
-        "packagesPath": "C:\\Users\\holde\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\holde\\Documents\\GitHub\\RetroNet\\RetroNet\\obj\\",
+        "projectPath": "/Users/sethrichard/Documents/GitHub/RetroNet/RetroNet/RetroNet.csproj",
+        "packagesPath": "/Users/sethrichard/.nuget/packages/",
+        "outputPath": "/Users/sethrichard/Documents/GitHub/RetroNet/RetroNet/obj/",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\holde\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/sethrichard/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -42,15 +43,15 @@
           "dependencies": {
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[5.0.6, )"
+              "version": "[5.0.7, )"
             },
             "Microsoft.AspNetCore.Identity.UI": {
               "target": "Package",
-              "version": "[5.0.6, )"
+              "version": "[5.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[5.0.6, )"
+              "version": "[5.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
@@ -60,7 +61,7 @@
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[5.0.6, )"
+              "version": "[5.0.7, )"
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
@@ -72,7 +73,7 @@
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[5.0.1, )"
             },
             "Webpack": {
               "target": "Package",
@@ -97,7 +98,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.301/RuntimeIdentifierGraph.json"
         }
       }
     }
