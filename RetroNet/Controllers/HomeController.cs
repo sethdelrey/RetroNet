@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Collections;
 using Microsoft.AspNetCore.Mvc;
 using _90sTest.Models;
 using _90sTest.Entities;
@@ -58,5 +59,29 @@ namespace _90sTest.Controllers
 
             return View("Index", feed);
         }
+
+        public IActionResult Like(string postId) 
+        {
+            var postIdInt = int.Parse(postId);
+            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId == postIdInt).ToArray();
+            
+            if (postList != null && postList.Length != 0)
+            {
+                postList[0].Likes++;
+                _context.Posts.Update(postList[0]);
+            }
+
+            _context.SaveChanges();
+
+            var feed = new FeedModel() { Posts = postList.ToArray() };
+
+            return View("Index", feed);
+        }
+
+        /*private List<Post> GetPosts()
+        {
+            var postList = _context.Posts;
+        }*/
     }
 }
+
