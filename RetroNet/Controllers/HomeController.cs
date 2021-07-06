@@ -78,6 +78,23 @@ namespace _90sTest.Controllers
             return View("Index", feed);
         }
 
+        public IActionResult Delete(string postId)
+        {
+            var postIdInt = int.Parse(postId);
+            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId == postIdInt).ToArray();
+
+            if (postList != null && postList.Length != 0)
+            {
+                _context.Posts.Remove(postList[0]);
+            }
+
+            _context.SaveChanges();
+
+            var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
+
+            return View("Index", feed);
+        }
+
         /*private List<Post> GetPosts()
         {
             var postList = _context.Posts;

@@ -37,6 +37,8 @@
     <PackageReference Include="Webpack" Version="4.0.0" />
   </ItemGroup>
 
+   
+
   <ItemGroup>
     <Folder Include="Views\Profile\" />
   </ItemGroup>

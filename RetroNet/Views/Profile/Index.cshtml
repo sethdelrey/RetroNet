@@ -1,32 +1,25 @@
 @model ProfileModel
+@using _90sTest.Data.Extension;
 @{ ViewData["Title"] = "Profile"; }
 
 <div class="container" style="margin-top:30px;">
     <div class="row">
         <div class="col-sm-3" id="sidenav">
-            <a href="#">
-                <button class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" type="button">
-                    <span class="btn-text">Feed</span>
-                </button>
-            </a>
+            <a class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" asp-controller="Home" asp-action="Index">Feed</a>
             <br>
-            <a href="#">
-                <button class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" type="button">
-                    <span class="btn-text">Friends</span>
-                </button>
-            </a>
+            @{
+                var ProfileParameters = new Dictionary<string, string>()
+                                        {
+                        { "username",  User.GetLoggedInUserName() }
+                    };
+            }
+            <a class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" asp-controller="Profile" asp-action="Index" asp-all-route-data="ProfileParameters">Profile</a>
             <br>
-            <a href="#">
-                <button class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" type="button">
-                    <span class="btn-text">Profile</span>
+            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton">
+                    <span class="btn-text">Logout</span>
                 </button>
-            </a>
-            <br>
-            <a href="#">
-                <button class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" type="button">
-                    <span class="btn-text">Settings</span>
-                </button>
-            </a>
+            </form>
         </div>
         <div class="col-sm-9 mb-4 mb-lg-0 feed">
             <div class="card">
