@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using _90sTest.Areas.Identity.Data;
 using _90sTest.Entities;
 
@@ -11,8 +12,14 @@ namespace _90sTest.Models
         {
         }
 
-        public RetroNetUser user { get; set; }
+        public RetroNetUser User { get; set; }
 
-        public List<Post> usersPosts { get; set; }
+        public List<Post> UsersPosts { get; set; }
+
+        [Required]
+        [MinLength(0)]
+        [MaxLength(256)]
+        [Display(Name = "New Bio")]
+        public string Bio { get; set; }
     }
 }

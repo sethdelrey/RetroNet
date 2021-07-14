@@ -9,9 +9,11 @@
             <br>
             @{
                 var ProfileParameters = new Dictionary<string, string>()
-                                        {
+                                            {
                         { "username",  User.GetLoggedInUserName() }
                     };
+                var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
+
             }
             <a class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" asp-controller="Profile" asp-action="Index" asp-all-route-data="ProfileParameters">Profile</a>
             <br>
@@ -24,30 +26,49 @@
         <div class="col-sm-9 mb-4 mb-lg-0 feed">
             <div class="card">
                 <div class="card-header">
-                    @Model.user.Name (@@@Model.user.UserName)
+                    @Model.User.Name (@@@Model.User.UserName)
                 </div>
-                <div class="card-body">
-                    <div>
-                        This is where a users bio would go, need to add that.
+                <div class="card-body card-text">
+                    <div id="ViewBio">
+                        @Model.User.Bio
                     </div>
-                    <div>
-                        Following: <a href="#">100</a>
-                        <br />
-                        Followers: <a href="#">100</a>
+                    <div id="EditBio">
+                        <form asp-action="EditBio" asp-controller="Profile">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            @Html.TextAreaFor(model => model.Bio, new { @class = "form-control", @rows = 4 })
+                            <input asp-for="User.UserName" type="hidden"/>
 
+                            <div class="d-flex justify-content-end mt-3">
+                                <button class="btn btn-sm mr-2 btn-primary border-dark" type="submit">Edit</button>
+                            </div>
+                        </form>
                     </div>
+                    <br />
+                    <div>
+                        <span>Following: <a href="#">100</a></span>
+                        <span>Followers: <a href="#">100</a></span>
+                    </div>
+                    @if (IsUsersProfile)
+                    {
+                        <div class="d-flex justify-content-end mt-3" id="EditButton">
+                            <button class="btn btn-sm mr-2 btn-primary border-dark" onclick="toggleProfileForm()">Edit</button>
+                        </div>
+                    }
                 </div>
             </div>
             <br />
-            @foreach (_90sTest.Entities.Post post in Model.usersPosts)
+            @foreach (_90sTest.Entities.Post post in Model.UsersPosts)
             {
-
+                var declineParams = new Dictionary<string, string>()
+                    {
+                        { "postId", post.PostId.ToString() }
+                    };
                 <div class="card">
                     <div class="card-header">
-                        @post.User.Name (@@@Model.user.UserName)
+                        @post.User.Name (@@@Model.User.UserName)
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">
+                    <div class="card-body card-text">
+                        <p>
                             @post.Content
                         </p>
                         <div class="d-flex justify-content-end mt-3">
@@ -55,10 +76,17 @@
                             &nbsp;
                             <div>@post.Likes Likes</div>
                             &nbsp;
-                            <button class="btn btn-sm mr-2 btn-primary border-dark" type="button">
-                                <span class="btn-text">Like</span>
-                            </button>
+                            @if (!IsUsersProfile)
+                            {
+                                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
+                            }
+
                         </div>
+
                     </div>
                 </div>
                 <br>
@@ -66,3 +94,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    window.onload = function () {
+        document.getElementById('EditBio').style.display = 'none';
+        document.getElementById('ViewBio').style.display = 'block';
+        document.getElementById('EditButton').style.display = 'block';
+        
+    }
+
+    function toggleProfileForm() {
+        var x = document.getElementById("EditBio");
+        var y = document.getElementById("ViewBio");
+        var z = document.getElementById("EditButton");
+
+        if (x.style.display === "none") {
+            x.style.display = "block";
+            y.style.display = "none";
+            z.style.display = "none";
+        } else {
+            x.style.display = "none";
+            y.style.display = "block";
+            z.style.display = "block";
+        }
+    }
+</script>
+

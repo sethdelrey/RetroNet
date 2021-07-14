@@ -8,6 +8,7 @@ using _90sTest.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace _90sTest.Controllers
 {
@@ -27,11 +28,32 @@ namespace _90sTest.Controllers
         {
             var data = new ProfileModel
             {
-                user = _userManager.FindByNameAsync(username).Result,
-                usersPosts = _context.Posts.Select(p => p).Where(p => p.User.UserName == username).ToList()
+                User = _userManager.FindByNameAsync(username).Result,
+                UsersPosts = _context.Posts.Select(p => p).Where(p => p.User.UserName == username).ToList()
             };
 
             return View("Index", data);
         }
+        public IActionResult EditBio(ProfileModel data)
+        {
+            var p_userName = data.User.UserName;
+            if (data?.Bio != null)
+            {
+                var users = _context.Users.Select(u => u).Where(u => u.UserName == data.User.UserName).Include(user => user.LikedPosts).ToArray();
+                if (users != null && users.Length > 0)
+                {
+                    users[0].Bio = data.Bio;
+                    _context.Users.Update(users[0]);
+                }
+
+                _context.SaveChanges();
+                ModelState.Clear();
+            }
+            
+
+            return RedirectToAction("Index", "Profile", new { username = p_userName });
+        }
     }
+
+
 }
