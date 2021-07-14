@@ -42,7 +42,7 @@ namespace _90sTest.Controllers
             return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<IActionResult> SubmitAsync(PostsModel data)
+        public async Task<IActionResult> SubmitAsync(FeedModel data)
         {
             var userId = User.GetLoggedInUserId<string>(); // Specify the type of your UserId;
 
@@ -51,11 +51,9 @@ namespace _90sTest.Controllers
             // Add new post to db
             _context.Posts.Add(new Post(data.NewPost.Content, user, DateTime.Now));
             _context.SaveChanges();
-
+            ModelState.Clear();
             // Get posts and users from db
-            var postList = _context.Posts.Include(post => post.User).ToList();
-
-            var feed = new FeedModel() { Posts = postList.OrderByDescending(p => p.Date).ToArray() };
+            var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
             return View("Index", feed);
         }
