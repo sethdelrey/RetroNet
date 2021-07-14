@@ -59,7 +59,9 @@ namespace _90sTest.Controllers
 
             return View("Index", feed);
         }
-
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Like(string postId) 
         {
             var postIdInt = int.Parse(postId);
