@@ -14,7 +14,6 @@ namespace _90sTest.Data
     {
 
         public DbSet<Post> Posts { get; set; }
-        //public DbSet<_90sTestUser> User { get; set; }
         public DbSet<RetroNetUser> UserList { get; set; }
         public DbSet<Likes> Likes { get; set; }
 

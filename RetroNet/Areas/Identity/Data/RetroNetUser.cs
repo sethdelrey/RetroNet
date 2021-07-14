@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using _90sTest.Entities;
@@ -19,7 +20,12 @@ namespace _90sTest.Areas.Identity.Data
         public string Name { get; set; }
 
         [PersonalData]
+        [DataType(DataType.Date)]
         public DateTime DOB { get; set; }
+
+        [PersonalData]
+        [MaxLength(256)]
+        public string Bio { get; set; }
 
         public ICollection<Follows> Followers { get; set; }
 
@@ -29,7 +35,7 @@ namespace _90sTest.Areas.Identity.Data
 
         public override bool Equals(object obj)
         {
-            return UserName.Equals(((RetroNetUser) obj).UserName);
+            return obj != null && UserName.Equals(((RetroNetUser) obj).UserName);
         }
     }
 }

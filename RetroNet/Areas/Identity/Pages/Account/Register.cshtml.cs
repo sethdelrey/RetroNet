@@ -69,12 +69,14 @@ namespace _90sTest.Areas.Identity.Pages.Account
             public string Name { get; set; }
 
             [Required]
+            [MinLength(5)]
             [DataType(DataType.Text)]
             [Display(Name = "Username")]
+            
             public string Username { get; set; }
 
             [Required]
-            [DataType(DataType.DateTime)]
+            [DataType(DataType.Date)]
             [DOBValidation(ErrorMessage = "You must be 18 years or older to register.")]
             [Display(Name = "Birth Date")]
             public DateTime DOB { get; set; }
