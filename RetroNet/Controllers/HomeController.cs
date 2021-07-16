@@ -42,6 +42,8 @@ namespace _90sTest.Controllers
             return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitAsync(FeedModel data)
         {
             var userId = User.GetLoggedInUserId<string>(); // Specify the type of your UserId;
@@ -78,10 +80,12 @@ namespace _90sTest.Controllers
             return View("Index", feed);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(string postId)
         {
             var postIdInt = int.Parse(postId);
-            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId == postIdInt).ToArray();
+            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId == postIdInt && p.User.UserName == User.GetLoggedInUserName()).ToArray();
 
             if (postList != null && postList.Length != 0)
             {

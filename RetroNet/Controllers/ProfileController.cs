@@ -34,6 +34,9 @@ namespace _90sTest.Controllers
 
             return View("Index", data);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditBio(ProfileModel data)
         {
             var p_userName = data.User.UserName;

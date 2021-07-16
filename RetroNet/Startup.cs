@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using _90sTest.Services;
 
 namespace _90sTest
 {
@@ -22,8 +24,11 @@ namespace _90sTest
         {
             services.AddRazorPages();
             services.AddControllersWithViews();
-            /*services.AddDbContext<FeedContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("90sTestDatabase")));*/
+
+            // requires
+            
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
