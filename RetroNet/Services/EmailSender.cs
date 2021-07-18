@@ -28,7 +28,7 @@ namespace _90sTest.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("sric111@lsu.edu", Options.SendGridUser),
+                From = new EmailAddress("no-reply@90sNet.com", Options.SendGridUser),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

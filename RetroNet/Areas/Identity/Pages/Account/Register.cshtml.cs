@@ -69,7 +69,7 @@ namespace _90sTest.Areas.Identity.Pages.Account
             public string Name { get; set; }
 
             [Required]
-            [MinLength(5)]
+            [MinLength(5, ErrorMessage = "Username must be longer than 4 characters.")]
             [DataType(DataType.Text)]
             [Display(Name = "Username")]
             

@@ -21,8 +21,13 @@ namespace _90sTest.Areas.Identity
                     options.UseMySql(
                         context.Configuration.GetConnectionString("retronet-dev"), ServerVersion.AutoDetect(context.Configuration.GetConnectionString("retronet-dev"))));
 
-                services.AddDefaultIdentity<RetroNetUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<RetroNetContext>();
+                services.AddDefaultIdentity<RetroNetUser>(options => 
+                    {
+                        options.SignIn.RequireConfirmedAccount = true;
+                        options.User.RequireUniqueEmail = true;
+                    })
+                    .AddEntityFrameworkStores<RetroNetContext>()
+                    .AddDefaultTokenProviders();
 
                 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             });
