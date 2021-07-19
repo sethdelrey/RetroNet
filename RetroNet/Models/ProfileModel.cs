@@ -16,6 +16,8 @@ namespace _90sTest.Models
 
         public List<Post> UsersPosts { get; set; }
 
+        public List<Post> UserLikedPosts { get; set; }
+
         [Required]
         [MinLength(0)]
         [MaxLength(256)]

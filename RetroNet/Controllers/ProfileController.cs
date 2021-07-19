@@ -29,7 +29,9 @@ namespace _90sTest.Controllers
             var data = new ProfileModel
             {
                 User = _userManager.FindByNameAsync(username).Result,
-                UsersPosts = _context.Posts.Select(p => p).Where(p => p.User.UserName == username).ToList()
+                UsersPosts = _context.Posts.Where(p => p.User.UserName.Equals(username)).Select(p => p).ToList(),
+                UserLikedPosts = _context.Likes.Where(likes => likes.Liker.UserName.Equals(username)).Include(rat => rat.LikedPost.User).Select(likes => likes.LikedPost).ToList()
+
             };
 
             return View("Index", data);
