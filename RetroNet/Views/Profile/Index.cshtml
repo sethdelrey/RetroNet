@@ -9,7 +9,7 @@
             <br>
             @{
                 var ProfileParameters = new Dictionary<string, string>()
-                                            {
+                                                {
                         { "username",  User.GetLoggedInUserName() }
                     };
                 var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
@@ -59,11 +59,11 @@
             <br />
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="posts-tab" data-toggle="tab" href="/#posts"
+                    <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts"
                        role="tab" aria-controls="posts" aria-selected="true">Posts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="likes-tab" data-toggle="tab" href="/#likes"
+                    <a class="nav-link" id="likes-tab" data-toggle="tab" href="#likes"
                        role="tab" aria-controls="likes" aria-selected="false">Likes</a>
                 </li>
             </ul>
@@ -73,9 +73,9 @@
                     @foreach (_90sTest.Entities.Post post in Model.UsersPosts)
                     {
                         var declineParams = new Dictionary<string, string>()
-                            {
-                        { "postId", post.PostId.ToString() }
-                    };
+                                {
+                    { "postId", post.PostId.ToString() }
+                };
                         <div class="card">
                             <div class="card-header">
                                 @post.User.Name (@@@Model.User.UserName)
@@ -112,9 +112,9 @@
                         {
                             var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
                             var declineParams = new Dictionary<string, string>()
-                            {
-                        { "postId", post.PostId.ToString() }
-                    };
+                                {
+                    { "postId", post.PostId.ToString() }
+                };
 
 
                             <div class="card">
@@ -161,7 +161,7 @@
         document.getElementById('EditBio').style.display = 'none';
         document.getElementById('ViewBio').style.display = 'block';
         document.getElementById('EditButton').style.display = 'block';
-        
+
     }
 
     function toggleProfileForm() {
