@@ -39,6 +39,10 @@ namespace _90sTest.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [MaxLength(256)]
+            [Display(Name = "Bio")]
+            public string Bio { get; set; }
         }
 
         private async Task LoadAsync(RetroNetUser user)
