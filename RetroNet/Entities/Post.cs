@@ -11,6 +11,7 @@ namespace _90sTest.Entities
     {
         [Key]
         public int PostId { get; set; }
+
         public string Content { get; set; }
 
         public RetroNetUser User { get; set; }

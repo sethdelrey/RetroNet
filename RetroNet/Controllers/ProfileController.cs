@@ -36,27 +36,6 @@ namespace _90sTest.Controllers
 
             return View("Index", data);
         }
-
-        [ValidateAntiForgeryToken]
-        public IActionResult EditBio(ProfileModel data)
-        {
-            var p_userName = data.User.UserName;
-            if (data?.Bio != null)
-            {
-                var users = _context.Users.Select(u => u).Where(u => u.UserName == data.User.UserName).Include(user => user.LikedPosts).ToArray();
-                if (users != null && users.Length > 0)
-                {
-                    users[0].Bio = data.Bio;
-                    _context.Users.Update(users[0]);
-                }
-
-                _context.SaveChanges();
-                ModelState.Clear();
-            }
-            
-
-            return RedirectToAction("Index", "Profile", new { username = p_userName });
-        }
     }
 
 

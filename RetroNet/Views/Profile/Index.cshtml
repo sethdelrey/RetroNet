@@ -20,28 +20,11 @@
                     <div id="ViewBio">
                         @Model.User.Bio
                     </div>
-                    <div id="EditBio">
-                        <form asp-action="EditBio" asp-controller="Profile">
-                            <div asp-validation-summary="All" class="text-danger"></div>
-                            @Html.TextAreaFor(model => model.Bio, new { @class = "form-control", @rows = 4 })
-                            <input asp-for="User.UserName" type="hidden" />
-
-                            <div class="d-flex justify-content-end mt-3">
-                                <button class="btn btn-sm mr-2 btn-primary border-dark" type="submit">Edit</button>
-                            </div>
-                        </form>
-                    </div>
                     <br />
                     <div>
                         <span>Following: <a href="#">100</a></span>
                         <span>Followers: <a href="#">100</a></span>
                     </div>
-                    @if (IsUsersProfile)
-                    {
-                        <div class="d-flex justify-content-end mt-3" id="EditButton">
-                            <button class="btn btn-sm mr-2 btn-primary border-dark" onclick="toggleProfileForm()">Edit</button>
-                        </div>
-                    }
                 </div>
             </div>
             <br />
@@ -61,7 +44,7 @@
                     @foreach (_90sTest.Entities.Post post in Model.UsersPosts)
                     {
                         var declineParams = new Dictionary<string, string>()
-                                                {
+                                                        {
                     { "postId", post.PostId.ToString() }
                 };
                         <div class="card">
@@ -100,7 +83,7 @@
                         {
                             var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
                             var declineParams = new Dictionary<string, string>()
-                                                {
+                                                        {
                     { "postId", post.PostId.ToString() }
                 };
 
@@ -144,28 +127,6 @@
     </div>
 </div>
 
-<script>
-    window.onload = function () {
-        document.getElementById('EditBio').style.display = 'none';
-        document.getElementById('ViewBio').style.display = 'block';
-        document.getElementById('EditButton').style.display = 'block';
-
-    }
-
-    function toggleProfileForm() {
-        var x = document.getElementById("EditBio");
-        var y = document.getElementById("ViewBio");
-        var z = document.getElementById("EditButton");
-
-        if (x.style.display === "none") {
-            x.style.display = "block";
-            y.style.display = "none";
-            z.style.display = "none";
-        } else {
-            x.style.display = "none";
-            y.style.display = "block";
-            z.style.display = "block";
-        }
-    }
-</script>
-
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
