@@ -5343,13 +5343,14 @@ textarea[resize="horizontal"] {
  */
 
 .nav-link {
-    color: #869ab8;
+    color: black;
 }
 
-.nav-link:hover,
-.nav-link.active {
-    color: #c0c0c0;
-}
+    .nav-link:hover,
+    .nav-link.active {
+        color: #869ab8;
+        ;
+    }
 
 .nav-link:hover img,
 .nav-link.active img {
