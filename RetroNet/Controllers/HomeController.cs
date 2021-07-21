@@ -51,13 +51,13 @@ namespace _90sTest.Controllers
             RetroNetUser user = await _userManager.FindByIdAsync(User.GetLoggedInUserId<string>());
 
             // Add new post to db
-            _context.Posts.Add(new Post(data.NewPost.Content, user, DateTime.Now));
+            _context.Posts.Add(new Post(data.NewPostContent, user, DateTime.Now));
             _context.SaveChanges();
             ModelState.Clear();
             // Get posts and users from db
             var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
-            return View("Index", feed);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Like(string postId)
@@ -87,7 +87,7 @@ namespace _90sTest.Controllers
 
             var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
-            return View("Index", feed);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(string postId)
@@ -104,7 +104,8 @@ namespace _90sTest.Controllers
 
             var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
-            return View("Index", feed);
+            return RedirectToAction("Index");
+            //return View("Index", feed);
         }
     }
 }
