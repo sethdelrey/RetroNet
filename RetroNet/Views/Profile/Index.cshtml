@@ -4,25 +4,13 @@
 
 <div class="container" style="margin-top:30px;">
     <div class="row">
-        <div class="col-sm-3" id="sidenav">
-            <a class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" asp-controller="Home" asp-action="Index">Feed</a>
-            <br>
-            @{
-                var ProfileParameters = new Dictionary<string, string>()
-                                                {
-                        { "username",  User.GetLoggedInUserName() }
-                    };
-                var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
-
-            }
-            <a class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton" asp-controller="Profile" asp-action="Index" asp-all-route-data="ProfileParameters">Profile</a>
-            <br>
-            <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton">
-                    <span class="btn-text">Logout</span>
-                </button>
-            </form>
-        </div>
+        @{
+            var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
+        }
+        <partial name="_MainNav" model="navModel" />
+        @{
+            var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
+        }
         <div class="col-sm-9 mb-4 mb-lg-0 feed">
             <div class="card">
                 <div class="card-header">
@@ -73,7 +61,7 @@
                     @foreach (_90sTest.Entities.Post post in Model.UsersPosts)
                     {
                         var declineParams = new Dictionary<string, string>()
-                                {
+                                                {
                     { "postId", post.PostId.ToString() }
                 };
                         <div class="card">
@@ -112,7 +100,7 @@
                         {
                             var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
                             var declineParams = new Dictionary<string, string>()
-                                {
+                                                {
                     { "postId", post.PostId.ToString() }
                 };
 

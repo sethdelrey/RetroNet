@@ -1,4 +1,6 @@
-﻿@{
+﻿@using _90sTest.Data.Extension
+@using _90sTest.Models
+@{
     if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
     {
         Layout = (string)parentLayout;
@@ -8,15 +10,13 @@
         Layout = "/Areas/Identity/Pages/_Layout.cshtml";
     }
 }
-
-<h2>Manage your account</h2>
-
 <div>
-    <h4>Change your account settings</h4>
-    <hr />
     <div class="row">
         <div class="col-md-3">
-            <partial name="_ManageNav" />
+            @{
+                var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
+            }
+            <partial name="_MainNav" model="navModel" />
         </div>
         <div class="col-md-9">
             @RenderBody()
