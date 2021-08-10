@@ -3808,7 +3808,7 @@ button.section-black:focus {
 .dropdown-menu .dropdown-header,
 .dropdown-menu .dropdown-item {
     padding: .5rem 1rem;
-    font-size: 0.875rem;
+    font-size: 11px;
 }
 
 .dropdown-menu .dropdown-header {
@@ -3817,7 +3817,7 @@ button.section-black:focus {
 }
 
 .dropdown-menu .dropdown-item {
-    color: #697992;
+    color: black;
     transition: all 0.2s ease;
     font-weight: 300;
 }

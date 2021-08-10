@@ -19,7 +19,7 @@ header {
 }
 
 .sidenavbutton {
-    width:120px;
+    width:100%;
 }
 
 .feed {
@@ -56,4 +56,23 @@ header {
 
 label {
     font-size: 1rem;
+}
+
+.dropdown-menu {
+    background: #C0C0C0;
+}
+
+.dropdown-item {
+    color: black;
+}
+
+a.dropdown-menu.dropdown-item {
+    color: black;
+}
+
+a.dropdown-item:hover, a.dropdown-item::selection {
+    background: #C0C0C0;
+    border: solid;
+    border-color: black;
+    border-width: 1px;
 }

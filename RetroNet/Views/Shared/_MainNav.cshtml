@@ -1,7 +1,7 @@
 ﻿@model MainNavPartialViewModel
 
 <nav class="nav flex-column flex-row">
-    <a class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton nav-link active" asp-controller="Home" asp-action="Index">Feed</a>
+    <a class="btn btn-primary border-dark sidenavbutton nav-link active" asp-controller="Home" asp-action="Index">Feed</a>
     <br />
     <div class="btn-group dropright">
         <button type="button" class="btn btn-primary border-dark dropdown-toggle sidenavbutton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -22,7 +22,7 @@
     </div>
     <br />
     <form id="logoutForm" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="btn mr-2 mb-2 btn-primary border-dark sidenavbutton nav-link">
+            <button id="logout" type="submit" class="btn btn-primary border-dark sidenavbutton nav-link">
                 <span class="btn-text">Logout</span>
             </button>
         </form>

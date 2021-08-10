@@ -55,7 +55,8 @@ namespace _90sTest.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-                Name = user.Name
+                Name = user.Name, 
+                Bio = user.Bio
             };
         }
 
@@ -96,9 +97,14 @@ namespace _90sTest.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            if (Input.Name != user.Name)
+            if (Input.Name != null && Input.Name != "" && Input.Name != user.Name)
             {
                 user.Name = Input.Name;
+            }
+
+            if (Input.Bio != null && Input.Bio != "" && Input.Bio != user.Bio)
+            {
+                user.Bio = Input.Bio;
             }
 
             await _userManager.UpdateAsync(user);

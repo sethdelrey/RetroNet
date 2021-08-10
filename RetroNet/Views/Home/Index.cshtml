@@ -4,69 +4,68 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="container" style="margin-top:30px;">
-    <div class="row">
-        @{
-            var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
-        }
-        <partial name="_MainNav" model="navModel" />
-        <div class="col-sm-9 mb-4 mb-lg-0 feed">
+
+<div class="row">
+    @{
+        var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
+    }
+    <partial name="_MainNav" model="navModel" />
+    <div class="col-sm-9 mb-4 mb-lg-0 feed">
+        <div class="card">
+            <div class="card-header">
+                New Post
+            </div>
+            <div class="card-body">
+                <form asp-action="Submit" asp-controller="Home">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="card-text">
+                        @Html.TextAreaFor(model => model.NewPostContent, new { @class = "form-control", @rows = 4 })
+                        <span asp-validation-for="NewPostContent" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3">
+                        <button class="btn btn-sm mr-2 btn-primary border-dark" type="submit">Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br />
+        @foreach (_90sTest.Entities.Post post in Model.Posts)
+        {
+            var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
+            var declineParams = new Dictionary<string, string>()
+                {
+                    { "postId", post.PostId.ToString() }
+                };
+
+
             <div class="card">
                 <div class="card-header">
-                    New Post
+
+                    @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
+                    <div></div>
                 </div>
                 <div class="card-body">
-                    <form asp-action="Submit" asp-controller="Home">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="card-text">
-                            @Html.TextAreaFor(model => model.NewPostContent, new { @class = "form-control", @rows = 4 })
-                            <span asp-validation-for="NewPostContent" class="text-danger"></span>
-                        </div>
-                        <div class="d-flex justify-content-end mt-3">
-                            <button class="btn btn-sm mr-2 btn-primary border-dark" type="submit">Post</button>
-                        </div>
-                    </form>
+                    <p class="card-text">
+                        @post.Content
+                    </p>
+                    <div class="d-flex justify-content-end mt-3">
+                        <div>@post.Date.ToString()</div>
+                        &nbsp;
+                        <div>@post.Likes Likes</div>
+                        &nbsp;
+                        @if (!IsUsersPost)
+                        {
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
+                        }
+                    </div>
                 </div>
             </div>
-            <br />
-            @foreach (_90sTest.Entities.Post post in Model.Posts)
-            {
-                var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
-                var declineParams = new Dictionary<string, string>()
-                    {
-                        { "postId", post.PostId.ToString() }
-                    };
-
-
-                <div class="card">
-                    <div class="card-header">
-
-                        @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
-                        <div></div>
-                    </div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            @post.Content
-                        </p>
-                        <div class="d-flex justify-content-end mt-3">
-                            <div>@post.Date.ToString()</div>
-                            &nbsp;
-                            <div>@post.Likes Likes</div>
-                            &nbsp;
-                            @if (!IsUsersPost)
-                            {
-                                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
-                            }
-                            else
-                            {
-                                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
-                            }
-                        </div>
-                    </div>
-                </div>
-                <br>
-            }
-        </div>
+            <br>
+        }
     </div>
 </div>
 

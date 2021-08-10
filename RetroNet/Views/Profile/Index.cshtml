@@ -2,57 +2,100 @@
 @using _90sTest.Data.Extension;
 @{ ViewData["Title"] = "Profile"; }
 
-<div class="container" style="margin-top:30px;">
-    <div class="row">
-        @{
-            var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
-        }
-        <partial name="_MainNav" model="navModel" />
-        @{
-            var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
-        }
-        <div class="col-sm-9 mb-4 mb-lg-0 feed">
-            <div class="card">
-                <div class="card-header">
-                    @Model.User.Name (@@@Model.User.UserName)
+
+<div class="row">
+    @{
+        var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
+    }
+    <partial name="_MainNav" model="navModel" />
+    @{
+        var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
+    }
+    <div class="col-sm-9 mb-4 mb-lg-0 feed">
+        <div class="card">
+            <div class="card-header">
+                @Model.User.Name (@@@Model.User.UserName)
+            </div>
+            <div class="card-body card-text">
+                <div id="ViewBio">
+                    @Model.User.Bio
                 </div>
-                <div class="card-body card-text">
-                    <div id="ViewBio">
-                        @Model.User.Bio
-                    </div>
-                    <br />
-                    <div>
-                        <span>Following: <a href="#">100</a></span>
-                        <span>Followers: <a href="#">100</a></span>
-                    </div>
+                <br />
+                <div>
+                    <span>Following: <a href="#">100</a></span>
+                    <span>Followers: <a href="#">100</a></span>
                 </div>
             </div>
-            <br />
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts"
-                       role="tab" aria-controls="posts" aria-selected="true">Posts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="likes-tab" data-toggle="tab" href="#likes"
-                       role="tab" aria-controls="likes" aria-selected="false">Likes</a>
-                </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane show active" id="posts" role="tabpanel"
-                     aria-labelledby="posts-tab">
-                    @foreach (_90sTest.Entities.Post post in Model.UsersPosts)
+        </div>
+        <br />
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts"
+                    role="tab" aria-controls="posts" aria-selected="true">Posts</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="likes-tab" data-toggle="tab" href="#likes"
+                    role="tab" aria-controls="likes" aria-selected="false">Likes</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane show active" id="posts" role="tabpanel"
+                    aria-labelledby="posts-tab">
+                @foreach (_90sTest.Entities.Post post in Model.UsersPosts)
+                {
+                    var declineParams = new Dictionary<string, string>()
+                                                    {
+                { "postId", post.PostId.ToString() }
+            };
+                    <div class="card">
+                        <div class="card-header">
+                            @post.User.Name (@@@Model.User.UserName)
+                        </div>
+                        <div class="card-body card-text">
+                            <p>
+                                @post.Content
+                            </p>
+                            <div class="d-flex justify-content-end mt-3">
+                                <div>@post.Date.ToString()</div>
+                                &nbsp;
+                                <div>@post.Likes Likes</div>
+                                &nbsp;
+                                @if (!IsUsersProfile)
+                                {
+                                    <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <br>
+                }
+            </div>
+            <div class="tab-pane" id="likes" role="tabpanel" aria-labelledby="likes-tab">
+                @if (Model.UserLikedPosts.Count != 0)
+                {
+                    @foreach (_90sTest.Entities.Post post in Model.UserLikedPosts)
                     {
+                        var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
                         var declineParams = new Dictionary<string, string>()
-                                                        {
-                    { "postId", post.PostId.ToString() }
-                };
+                                                    {
+                { "postId", post.PostId.ToString() }
+            };
+
+
                         <div class="card">
                             <div class="card-header">
-                                @post.User.Name (@@@Model.User.UserName)
+
+                                @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
+                                <div></div>
                             </div>
-                            <div class="card-body card-text">
-                                <p>
+                            <div class="card-body">
+                                <p class="card-text">
                                     @post.Content
                                 </p>
                                 <div class="d-flex justify-content-end mt-3">
@@ -60,7 +103,7 @@
                                     &nbsp;
                                     <div>@post.Likes Likes</div>
                                     &nbsp;
-                                    @if (!IsUsersProfile)
+                                    @if (!IsUsersPost)
                                     {
                                         <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
                                     }
@@ -68,60 +111,16 @@
                                     {
                                         <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
                                     }
-
                                 </div>
-
                             </div>
                         </div>
                         <br>
                     }
-                </div>
-                <div class="tab-pane" id="likes" role="tabpanel" aria-labelledby="likes-tab">
-                    @if (Model.UserLikedPosts.Count != 0)
-                    {
-                        @foreach (_90sTest.Entities.Post post in Model.UserLikedPosts)
-                        {
-                            var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
-                            var declineParams = new Dictionary<string, string>()
-                                                        {
-                    { "postId", post.PostId.ToString() }
-                };
-
-
-                            <div class="card">
-                                <div class="card-header">
-
-                                    @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
-                                    <div></div>
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text">
-                                        @post.Content
-                                    </p>
-                                    <div class="d-flex justify-content-end mt-3">
-                                        <div>@post.Date.ToString()</div>
-                                        &nbsp;
-                                        <div>@post.Likes Likes</div>
-                                        &nbsp;
-                                        @if (!IsUsersPost)
-                                        {
-                                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
-                                        }
-                                        else
-                                        {
-                                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                        }
-                    }
-                    else
-                    {
-                        <p>This user has not liked any posts</p>
-                    }
-                </div>
+                }
+                else
+                {
+                    <p>This user has not liked any posts</p>
+                }
             </div>
         </div>
     </div>
