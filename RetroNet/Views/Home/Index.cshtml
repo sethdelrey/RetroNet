@@ -4,6 +4,7 @@
     ViewData["Title"] = "Home";
 }
 
+@{ Html.Html5DateRenderingMode = Html5DateRenderingMode.Rfc3339; }
 
 <div class="row">
     @{
@@ -33,7 +34,7 @@
         {
             var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
             var declineParams = new Dictionary<string, string>()
-                {
+            {
                     { "postId", post.PostId.ToString() }
                 };
 
@@ -49,7 +50,7 @@
                         @post.Content
                     </p>
                     <div class="d-flex justify-content-end mt-3">
-                        <div>@post.Date.ToString()</div>
+                        <time datetime="@post.Date.ToString()" date-format="">@post.Date.ToString()</time>
                         &nbsp;
                         <div>@post.Likes Likes</div>
                         &nbsp;
@@ -68,6 +69,22 @@
         }
     </div>
 </div>
+
+<script>
+
+    var d = new Date();
+    var utcHours = d.getTimezoneOffset() / 60;
+
+    var timeElements = document.getElementsByTagName("time");
+
+    for (var i = 0, max = timeElements.length; i < max; i++) {
+        var tempDate = new Date(timeElements[i].dateTime);
+        tempDate.setTime(tempDate.getTime() - (utcHours * 60 * 60 * 1000));
+        timeElements[i].dateTime = tempDate.toLocaleString();
+        timeElements[i].innerText = timeElements[i].dateTime;
+    }
+
+</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
