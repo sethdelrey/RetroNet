@@ -16,6 +16,7 @@ namespace _90sTest.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<RetroNetUser> UserList { get; set; }
         public DbSet<Likes> Likes { get; set; }
+        public DbSet<Follows> Follows { get; set; }
 
 
         public RetroNetContext(DbContextOptions options)

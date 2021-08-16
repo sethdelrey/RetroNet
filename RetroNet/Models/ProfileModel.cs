@@ -18,10 +18,10 @@ namespace _90sTest.Models
 
         public List<Post> UserLikedPosts { get; set; }
 
-        [Required]
-        [MinLength(0)]
-        [MaxLength(256)]
-        [Display(Name = "New Bio")]
-        public string Bio { get; set; }
+        public bool IsFollowed { get; set; }
+
+        public int FollowersCount { get; set; }
+
+        public int FollowingCount { get; set; }
     }
 }

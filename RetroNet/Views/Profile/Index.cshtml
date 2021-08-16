@@ -6,11 +6,10 @@
 <div class="row">
     @{
         var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
+        var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
+        
     }
     <partial name="_MainNav" model="navModel" />
-    @{
-        var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
-    }
     <div class="col-sm-9 mb-4 mb-lg-0 feed">
         <div class="card">
             <div class="card-header">
@@ -22,8 +21,33 @@
                 </div>
                 <br />
                 <div>
-                    <span>Following: <a href="#">100</a></span>
-                    <span>Followers: <a href="#">100</a></span>
+                    @{ 
+                        var followsCountParams = new Dictionary<string, string>()
+                        {
+                            { "username", Model.User.UserName }
+                        };
+                    }
+                    <span>Following: <a asp-action="Index" asp-controller="Follows" asp-all-route-data="followsCountParams">@Model.FollowingCount</a></span>
+                    <span>Followers: <a asp-action="Index" asp-controller="Follows" asp-all-route-data="followsCountParams">@Model.FollowersCount</a></span>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+
+                    @if (!IsUsersProfile)
+                    {
+                        var followParams = new Dictionary<string, string>()
+                        {
+                            { "userId", Model.User.Id }
+                        };
+
+                        if (Model.IsFollowed)
+                        {
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="UnFollow" asp-controller="Profile" asp-all-route-data="followParams">Unfollow</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Follow" asp-controller="Profile" asp-all-route-data="followParams">Follow</a>
+                        }
+                    }
                 </div>
             </div>
         </div>
@@ -31,32 +55,32 @@
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts"
-                    role="tab" aria-controls="posts" aria-selected="true">Posts</a>
+                   role="tab" aria-controls="posts" aria-selected="true">Posts</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="likes-tab" data-toggle="tab" href="#likes"
-                    role="tab" aria-controls="likes" aria-selected="false">Likes</a>
+                   role="tab" aria-controls="likes" aria-selected="false">Likes</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane show active" id="posts" role="tabpanel"
-                    aria-labelledby="posts-tab">
+                 aria-labelledby="posts-tab">
                 @foreach (_90sTest.Entities.Post post in Model.UsersPosts)
                 {
                     var declineParams = new Dictionary<string, string>()
-                                                    {
-                { "postId", post.PostId.ToString() }
-            };
+                    {
+                        { "postId", post.PostId.ToString() }
+                    };
                     <div class="card">
                         <div class="card-header">
-                            @post.User.Name (@@@Model.User.UserName)
+                            @Model.User.Name (@@@Model.User.UserName)
                         </div>
                         <div class="card-body card-text">
                             <p>
                                 @post.Content
                             </p>
                             <div class="d-flex justify-content-end mt-3">
-                                <div>@post.Date.ToString()</div>
+                                <time datetime="@post.Date.ToString()" date-format="">@post.Date.ToString()</time>
                                 &nbsp;
                                 <div>@post.Likes Likes</div>
                                 &nbsp;
@@ -68,9 +92,7 @@
                                 {
                                     <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
                                 }
-
                             </div>
-
                         </div>
                     </div>
                     <br>
@@ -83,48 +105,62 @@
                     {
                         var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
                         var declineParams = new Dictionary<string, string>()
-                                                    {
-                { "postId", post.PostId.ToString() }
-            };
+                        {
+                            { "postId", post.PostId.ToString() }
+                        };
+                <div class="card">
+                    <div class="card-header">
 
-
-                        <div class="card">
-                            <div class="card-header">
-
-                                @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
-                                <div></div>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">
-                                    @post.Content
-                                </p>
-                                <div class="d-flex justify-content-end mt-3">
-                                    <div>@post.Date.ToString()</div>
-                                    &nbsp;
-                                    <div>@post.Likes Likes</div>
-                                    &nbsp;
-                                    @if (!IsUsersPost)
-                                    {
-                                        <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
-                                    }
-                                    else
-                                    {
-                                        <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
-                                    }
-                                </div>
-                            </div>
+                        @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
+                        <div></div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            @post.Content
+                        </p>
+                        <div class="d-flex justify-content-end mt-3">
+                            <time datetime="@post.Date.ToString()" date-format="">@post.Date.ToString()</time>
+                            &nbsp;
+                            <div>@post.Likes Likes</div>
+                            &nbsp;
+                            @if (!IsUsersPost)
+                            {
+                                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
+                            }
                         </div>
-                        <br>
-                    }
+                    </div>
+                </div>
+                <br>
+            }
                 }
                 else
                 {
-                    <p>This user has not liked any posts</p>
+                    <p>This user has not liked any posts.</p>
                 }
             </div>
         </div>
     </div>
 </div>
+
+<script>
+
+    var d = new Date();
+    var utcHours = d.getTimezoneOffset() / 60;
+
+    var timeElements = document.getElementsByTagName("time");
+
+    for (var i = 0, max = timeElements.length; i < max; i++) {
+        var tempDate = new Date(timeElements[i].dateTime);
+        tempDate.setTime(tempDate.getTime() - (utcHours * 60 * 60 * 1000));
+        timeElements[i].dateTime = tempDate.toLocaleString();
+        timeElements[i].innerText = timeElements[i].dateTime;
+    }
+
+</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
