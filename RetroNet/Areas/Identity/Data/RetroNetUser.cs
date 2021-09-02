@@ -27,9 +27,9 @@ namespace _90sTest.Areas.Identity.Data
         [MaxLength(256)]
         public string Bio { get; set; }
 
-        public ICollection<Follows> Followers { get; set; }
+        public ICollection<Blocks> Followers { get; set; }
 
-        public ICollection<Follows> Following { get; set; }
+        public ICollection<Blocks> Following { get; set; }
 
         public ICollection<Likes> LikedPosts { get; set; }
 

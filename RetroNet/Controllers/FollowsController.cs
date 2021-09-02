@@ -31,10 +31,10 @@ namespace _90sTest.Controllers
             var user = _userManager.FindByNameAsync(username).Result;
             var data = new FollowsModel()
             { 
-                FollowersList = _context.Follows.AsNoTracking().Where(f => f.UserId.Equals(user.Id)).Include(f => f.Follower).Select(f => f.Follower).ToList(),
-                FollowingList = _context.Follows.AsNoTracking().Where(f => f.FollowerId.Equals(user.Id)).Include(f => f.User).Select(f => f.User).ToList(),
+                FollowersList = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(user.Id)).Include(f => f.Blocker).Select(f => f.Blocker).ToList(),
+                FollowingList = _context.Blocks.AsNoTracking().Where(f => f.BlockerId.Equals(user.Id)).Include(f => f.User).Select(f => f.User).ToList(),
                 User = user,
-                IsFollowed = _context.Follows.AsNoTracking().Where(f => f.UserId.Equals(user.Id) && f.FollowerId.Equals(currentUserId)).ToList().Count != 0
+                IsFollowed = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(user.Id) && f.BlockerId.Equals(currentUserId)).ToList().Count != 0
             };
 
             return View("Follows", data);

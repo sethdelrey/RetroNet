@@ -29,7 +29,16 @@ namespace _90sTest.Controllers
 
         public IActionResult Index()
         {
-            var postList = _context.Posts.Include(post => post.User).ToList();
+            // NEED TO OPTIMIZE THIS
+            var userId = User.GetLoggedInUserId<string>();
+            var blockListPart1 = _context.Blocks.AsNoTracking().Include(block => block.User).Where(block => block.BlockerId.Equals(userId)).Select(block => block.User.Id).ToList();
+            var blockListPart2 = _context.Blocks.AsNoTracking().Include(block => block.Blocker).Where(block => block.UserId.Equals(userId)).Select(block => block.Blocker.Id).ToList();
+            
+            blockListPart1.AddRange(blockListPart2);
+
+            var blockList = blockListPart1.Distinct().ToList();
+
+            var postList = _context.Posts.AsNoTracking().Include(post => post.User).Where(post => !(blockList.Any(bl => bl.Equals(post.User.Id)))).ToList();
 
             var feed = new FeedModel() { Posts = postList.OrderByDescending(p => p.Date).ToArray() };
 

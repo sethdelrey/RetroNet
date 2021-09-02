@@ -29,64 +29,62 @@ namespace _90sTest.Controllers
         public IActionResult Index(string username)
         {
             var currentUserId = User.GetLoggedInUserId<string>();
-            var followedUserId = _userManager.FindByNameAsync(username).Result.Id;
+            var blockedUserId = _userManager.FindByNameAsync(username).Result.Id;
 
             var data = new ProfileModel
             {
                 User = _userManager.FindByNameAsync(username).Result,
                 UsersPosts = _context.Posts.AsNoTracking().Where(p => p.User.UserName.Equals(username)).Select(p => p).OrderByDescending(p => p.Date).ToList(),
                 UserLikedPosts = _context.Likes.AsNoTracking().Where(likes => likes.Liker.UserName.Equals(username)).Include(rat => rat.LikedPost.User).Select(likes => likes.LikedPost).OrderByDescending(p => p.Date).ToList(),
-                IsFollowed = _context.Follows.AsNoTracking().Where(f => f.UserId.Equals(followedUserId) && f.FollowerId.Equals(currentUserId)).ToList().Count != 0,
-                FollowersCount = _context.Follows.AsNoTracking().Where(f => f.UserId.Equals(followedUserId)).Count(),
-                FollowingCount = _context.Follows.AsNoTracking().Where(f => f.FollowerId.Equals(followedUserId)).Count()
+                IsBlocked = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId) && f.BlockerId.Equals(currentUserId)).ToList().Count != 0,
+                BlockeByCount = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId)).Count(),
+                BlockedCount = _context.Blocks.AsNoTracking().Where(f => f.BlockerId.Equals(blockedUserId)).Count()
             };
 
             return View("Index", data);
         }
 
-        public IActionResult Follow(string userId)
+        public IActionResult Block(string userId)
         {
             var currentUserId = User.GetLoggedInUserId<string>();
-            var followedUserId = userId;
+            var blockedUserId = userId;
 
-            if (!currentUserId.Equals(followedUserId))
+            if (!currentUserId.Equals(blockedUserId))
             {
-                var result = _context.Follows.AsNoTracking().Where(f => f.UserId.Equals(followedUserId) && f.FollowerId.Equals(currentUserId)).ToList();
+                var result = _context.Blocks.AsNoTracking().Where(b => b.UserId.Equals(blockedUserId) && b.BlockerId.Equals(currentUserId)).ToList();
 
                 if (result.Count == 0)
                 {
-                    var f = new Follows() { UserId = followedUserId, FollowerId = currentUserId };
-                    //_context.Entry(f).State = EntityState.Detached;
-                    _context.Follows.Add(f);
+                    var f = new Blocks() { UserId = blockedUserId, BlockerId = currentUserId };
+                    _context.Blocks.Add(f);
                     _context.SaveChanges();
                 }
 
             }
 
-            return RedirectToAction("Index", new { username = _userManager.FindByIdAsync(followedUserId).Result.UserName });
+            return RedirectToAction("Index", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
         }
 
-        public IActionResult UnFollow(string userId)
+        public IActionResult UnBlock(string userId)
         {
             var currentUserId = User.GetLoggedInUserId<string>();
-            var followedUserId = userId;
+            var blockedUserId = userId;
 
-            if (!currentUserId.Equals(followedUserId))
+            if (!currentUserId.Equals(blockedUserId))
             {
                 
 
-                var result = _context.Follows.AsNoTracking().Where(f => f.UserId.Equals(followedUserId) && f.FollowerId.Equals(currentUserId)).ToList();
+                var result = _context.Blocks.AsNoTracking().Where(b => b.UserId.Equals(blockedUserId) && b.BlockerId.Equals(currentUserId)).ToList();
 
                 if (result.Count != 0)
                 {
-                    var f = new Follows() { UserId = followedUserId, FollowerId = currentUserId };
-                    //_context.Entry(f).State = EntityState.Detached;
-                    _context.Follows.Remove(f);
+                    var f = new Blocks() { UserId = blockedUserId, BlockerId = currentUserId };
+                    _context.Blocks.Remove(f);
                     _context.SaveChanges();
                 }
             }
 
-            return RedirectToAction("Index", new { username = _userManager.FindByIdAsync(followedUserId).Result.UserName });
+            return RedirectToAction("Index", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
         }
     }
 
