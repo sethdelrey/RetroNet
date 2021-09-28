@@ -29,6 +29,7 @@ namespace _90sTest.Controllers
 
         public IActionResult Index()
         {
+            // Need to add paging to this so that the hit is smaller and add "hot" posts to it.
             var postList = _context.Posts.Include(post => post.User).ToList();
 
             var feed = new FeedModel() { Posts = postList.OrderByDescending(p => p.Date).ToArray() };
