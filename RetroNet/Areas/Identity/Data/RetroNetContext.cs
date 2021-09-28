@@ -16,7 +16,7 @@ namespace _90sTest.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<RetroNetUser> UserList { get; set; }
         public DbSet<Likes> Likes { get; set; }
-        public DbSet<Follows> Follows { get; set; }
+        public DbSet<Blocks> Blocks { get; set; }
 
 
         public RetroNetContext(DbContextOptions options)
@@ -45,16 +45,16 @@ namespace _90sTest.Data
                 .WithMany(u => u.LikedPosts)
                 .HasForeignKey(f => f.LikedPostId);
 
-            builder.Entity<Follows>()
-                .HasKey(f => new { f.UserId, f.FollowerId });
-            builder.Entity<Follows>()
+            builder.Entity<Blocks>()
+                .HasKey(f => new { f.UserId, f.BlockerId });
+            builder.Entity<Blocks>()
                 .HasOne(f => f.User)
                 .WithMany(u => u.Followers)
                 .HasForeignKey(f => f.UserId);
-            builder.Entity<Follows>()
-                .HasOne(f => f.Follower)
+            builder.Entity<Blocks>()
+                .HasOne(f => f.Blocker)
                 .WithMany(u => u.Following)
-                .HasForeignKey(f => f.FollowerId);
+                .HasForeignKey(f => f.BlockerId);
 
 
         }

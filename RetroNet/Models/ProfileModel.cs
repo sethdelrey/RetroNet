@@ -18,10 +18,10 @@ namespace _90sTest.Models
 
         public List<Post> UserLikedPosts { get; set; }
 
-        public bool IsFollowed { get; set; }
+        public bool IsBlocked { get; set; }
 
-        public int FollowersCount { get; set; }
+        public int BlockeByCount { get; set; }
 
-        public int FollowingCount { get; set; }
+        public int BlockedCount { get; set; }
     }
 }

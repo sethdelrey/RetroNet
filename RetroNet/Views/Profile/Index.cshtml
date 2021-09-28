@@ -22,30 +22,30 @@
                 <br />
                 <div>
                     @{ 
-                        var followsCountParams = new Dictionary<string, string>()
+                        var blocksCountParams = new Dictionary<string, string>()
                         {
                             { "username", Model.User.UserName }
                         };
                     }
-                    <span>Following: <a asp-action="Index" asp-controller="Follows" asp-all-route-data="followsCountParams">@Model.FollowingCount</a></span>
-                    <span>Followers: <a asp-action="Index" asp-controller="Follows" asp-all-route-data="followsCountParams">@Model.FollowersCount</a></span>
+                    <span>Blocking: <a asp-action="Index" asp-controller="Block" asp-all-route-data="blocksCountParams">@Model.BlockedCount</a></span>
+                    <span>Blocked Bys: <a asp-action="Index" asp-controller="Block" asp-all-route-data="blocksCountParams">@Model.BlockeByCount</a></span>
                 </div>
                 <div class="d-flex justify-content-end mt-3">
 
                     @if (!IsUsersProfile)
                     {
-                        var followParams = new Dictionary<string, string>()
+                        var blockParams = new Dictionary<string, string>()
                         {
                             { "userId", Model.User.Id }
                         };
 
-                        if (Model.IsFollowed)
+                        if (Model.IsBlocked)
                         {
-                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="UnFollow" asp-controller="Profile" asp-all-route-data="followParams">Unfollow</a>
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="UnBlock" asp-controller="Profile" asp-all-route-data="blockParams">Unblock</a>
                         }
                         else
                         {
-                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Follow" asp-controller="Profile" asp-all-route-data="followParams">Follow</a>
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Block" asp-controller="Profile" asp-all-route-data="blockParams">Block</a>
                         }
                     }
                 </div>
