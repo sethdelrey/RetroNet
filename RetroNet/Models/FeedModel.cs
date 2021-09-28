@@ -7,6 +7,9 @@ namespace _90sTest.Models
     public class FeedModel
     {
         public Post[] Posts { get; set; }
+        
+        // Top liked posts
+        public Post[] HotPosts {get; set; }
 
         [Required(ErrorMessage = "Your post must include something!")]
         public string NewPostContent { get; set; }
