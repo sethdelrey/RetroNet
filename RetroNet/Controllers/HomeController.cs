@@ -37,7 +37,8 @@ namespace _90sTest.Controllers
             blockListPart1.AddRange(blockListPart2);
 
             var blockList = blockListPart1.Distinct().ToList();
-
+            
+            // Need to add paging to this so that the hit is smaller and add "hot" posts to it.
             var postList = _context.Posts.AsNoTracking().Include(post => post.User).Where(post => !(blockList.Any(bl => bl.Equals(post.User.Id)))).ToList();
 
             var feed = new FeedModel() { Posts = postList.OrderByDescending(p => p.Date).ToArray() };
