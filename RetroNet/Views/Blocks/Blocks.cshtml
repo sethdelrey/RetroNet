@@ -1,7 +1,7 @@
-﻿@model FollowsModel
+﻿@model BlocksModel
 @using _90sTest.Data.Extension;
 @{
-    ViewData["Title"] = "Follows";
+    ViewData["Title"] = "Blocks";
 }
 <div class="row">
     @{
@@ -20,24 +20,24 @@
                 </div>
                 <br />
                 <div>
-                    <span>Following: <a href="#">100</a></span>
-                    <span>Followers: <a href="#">100</a></span>
+                    <span>Blocking: @Model.BlockedCount</span>
+                    <span>Blocked By: @Model.BlockeByCount</span>
                 </div>
                 <div class="d-flex justify-content-end mt-3">
 
                     @if (!IsUsersProfile)
                     {
-                        var followParams = new Dictionary<string, string>()
+                        var blockParams = new Dictionary<string, string>()
                                                                         {
                             { "userId", Model.User.Id }
                         };
-                        if (Model.IsFollowed)
+                        if (Model.IsBlocked)
                         {
-                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="UnFollow" asp-controller="Profile" asp-all-route-data="followParams">Unfollow</a>
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="UnBlock" asp-controller="Profile" asp-all-route-data="blockParams">Unblock</a>
                         }
                         else
                         {
-                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Follow" asp-controller="Profile" asp-all-route-data="followParams">Follow</a>
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Block" asp-controller="Profile" asp-all-route-data="blockParams">Block</a>
                         }
                     }
                 </div>
@@ -45,21 +45,21 @@
         </div>
         <br />
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts"
-                   role="tab" aria-controls="posts" aria-selected="true">Followers</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="likes-tab" data-toggle="tab" href="#likes"
-                   role="tab" aria-controls="likes" aria-selected="false">Following</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="BlockedBy-tab" data-toggle="tab" href="#BlockedBy"
+                       role="tab" aria-controls="BlockedBy" aria-selected="true">Blocked By</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="Blocking-tab" data-toggle="tab" href="#Blocking"
+                       role="tab" aria-controls="Blocking" aria-selected="false">Blocking</a>
+                </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane show active" id="posts" role="tabpanel"
-                 aria-labelledby="posts-tab">
-                @if (Model.FollowersList.Count != 0)
+            <div class="tab-pane show active" id="BlockedBy" role="tabpanel"
+                 aria-labelledby="BlockedBy-tab">
+                @if (Model.BlockedByList.Count != 0)
                 {
-                    @foreach (_90sTest.Areas.Identity.Data.RetroNetUser user in Model.FollowersList)
+                    @foreach (_90sTest.Areas.Identity.Data.RetroNetUser user in Model.BlockedByList)
                     {
                         <div class="card card-tertiary">
                             <div class="card-header">
@@ -85,13 +85,13 @@
                 }
                 else
                 {
-                    <p>This user does not have any followers.</p>
+                    <p>This user is not blocked by anyone.</p>
                 }
             </div>
-            <div class="tab-pane" id="likes" role="tabpanel" aria-labelledby="likes-tab">
-                @if (Model.FollowingList.Count != 0)
+            <div class="tab-pane" id="Blocking" role="tabpanel" aria-labelledby="Blocking-tab">
+                @if (Model.BlockedList.Count != 0)
                 {
-                    @foreach (_90sTest.Areas.Identity.Data.RetroNetUser user in Model.FollowingList)
+                    @foreach (_90sTest.Areas.Identity.Data.RetroNetUser user in Model.BlockedList)
                     {
                         <div class="card card-tertiary">
                             <div class="card-header">
@@ -117,7 +117,7 @@
                 }
                 else
                 {
-                    <p>This user does not follow anyone.</p>
+                    <p>This user is not blocking anyone.</p>
                 }
             </div>
         </div>

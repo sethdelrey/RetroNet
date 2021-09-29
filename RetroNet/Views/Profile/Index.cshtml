@@ -7,7 +7,7 @@
     @{
         var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
         var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
-        
+
     }
     <partial name="_MainNav" model="navModel" />
     <div class="col-sm-9 mb-4 mb-lg-0 feed">
@@ -21,14 +21,15 @@
                 </div>
                 <br />
                 <div>
-                    @{ 
+                    @{
                         var blocksCountParams = new Dictionary<string, string>()
                         {
                             { "username", Model.User.UserName }
                         };
                     }
-                    <span>Blocking: <a asp-action="Index" asp-controller="Block" asp-all-route-data="blocksCountParams">@Model.BlockedCount</a></span>
-                    <span>Blocked Bys: <a asp-action="Index" asp-controller="Block" asp-all-route-data="blocksCountParams">@Model.BlockeByCount</a></span>
+                    <span>Blocking: <a asp-action="Index" asp-controller="Blocks" asp-all-route-data="blocksCountParams">@Model.BlockedCount</a></span>
+                    <span>Blocked By: <a asp-action="Index" asp-controller="Blocks" asp-all-route-data="blocksCountParams">@Model.BlockeByCount</a></span>
+
                 </div>
                 <div class="d-flex justify-content-end mt-3">
 
