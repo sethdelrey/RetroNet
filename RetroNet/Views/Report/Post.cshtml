@@ -1,0 +1,48 @@
+﻿@model ReportPostModel
+@using _90sTest.Data.Extension;
+@{ ViewData["Title"] = "Report User"; }
+
+
+<div class="row">
+    @{
+        var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
+    }
+    <partial name="_MainNav" model="navModel" />
+    <div class="card">
+        <div class="card-header">
+
+            @Model.ReportedPost.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@Model.ReportedPost.User.UserName>@@@Model.ReportedPost.User.UserName</a>)
+            <div></div>
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+                @Model.ReportedPost.Content
+            </p>
+            <div class="d-flex justify-content-end mt-3">
+                <time datetime="@Model.ReportedPost.Date.ToString()" date-format="">@Model.ReportedPost.Date.ToString()</time>
+                &nbsp;
+                <div>@Model.ReportedPost.Likes Likes</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var d = new Date();
+    var utcHours = d.getTimezoneOffset() / 60;
+
+    var timeElements = document.getElementsByTagName("time");
+
+    for (var i = 0, max = timeElements.length; i < max; i++) {
+        var tempDate = new Date(timeElements[i].dateTime);
+        tempDate.setTime(tempDate.getTime() - (utcHours * 60 * 60 * 1000));
+        timeElements[i].dateTime = tempDate.toLocaleString();
+        timeElements[i].innerText = timeElements[i].dateTime;
+    }
+
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

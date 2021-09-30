@@ -43,7 +43,21 @@
                 <div class="card-header">
 
                     @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
-                    <div></div>
+                    @*<a style="float:right;">...</a>*@
+                    <section class="dropright" style="float:right; color:black;">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            ...
+                        </a>
+                        <div class="dropdown-menu">
+                            @{
+                                var ReportPostParameters = new Dictionary<string, string>()
+                                {
+                                    { "postId",  post.PostId.ToString() }
+                                };
+                            }
+                            <a class="dropdown-item" asp-controller="Report" asp-action="PostReporting" asp-all-route-data="ReportPostParameters">Report Post</a>
+                        </div>
+                    </section>
                 </div>
                 <div class="card-body">
                     <p class="card-text">
