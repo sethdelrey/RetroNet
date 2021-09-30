@@ -7,5 +7,10 @@ namespace _90sTest.Models
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+        public string ErrorDisplayMessage { get; set; }
+
     }
 }
+
+
