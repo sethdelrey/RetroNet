@@ -43,7 +43,7 @@ namespace _90sTest.Controllers
 
             var feed = new FeedModel() { Posts = postList.OrderByDescending(p => p.Date).ToArray() };
 
-            return View("Index", feed);
+            return View("Home", feed);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -67,7 +67,7 @@ namespace _90sTest.Controllers
             // Get posts and users from db
             var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Home");
         }
 
         public IActionResult Like(string postId)
@@ -97,7 +97,7 @@ namespace _90sTest.Controllers
 
             var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Home");
         }
 
         public IActionResult Delete(string postId)
@@ -114,8 +114,7 @@ namespace _90sTest.Controllers
 
             var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
-            return RedirectToAction("Index");
-            //return View("Index", feed);
+            return RedirectToAction("Home");
         }
     }
 }

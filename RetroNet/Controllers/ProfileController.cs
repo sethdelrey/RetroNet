@@ -41,7 +41,7 @@ namespace _90sTest.Controllers
                 BlockedCount = _context.Blocks.AsNoTracking().Where(f => f.BlockerId.Equals(blockedUserId)).Count()
             };
 
-            return View("Index", data);
+            return View("Profile", data);
         }
 
         public IActionResult Block(string userId)
@@ -62,7 +62,7 @@ namespace _90sTest.Controllers
 
             }
 
-            return RedirectToAction("Index", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
+            return RedirectToAction("Profile", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
         }
 
         public IActionResult UnBlock(string userId)
@@ -84,7 +84,7 @@ namespace _90sTest.Controllers
                 }
             }
 
-            return RedirectToAction("Index", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
+            return RedirectToAction("Profile", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
         }
     }
 

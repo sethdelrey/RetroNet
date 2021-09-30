@@ -38,6 +38,5 @@
 
   <ItemGroup>
     <Folder Include="Data\Helpers\" />
-    <Folder Include="Views\Profile\" />
   </ItemGroup>
 </Project>
