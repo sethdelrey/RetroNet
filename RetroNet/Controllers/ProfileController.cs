@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using _90sTest.Areas.Identity.Data;
@@ -28,20 +29,31 @@ namespace _90sTest.Controllers
 
         public IActionResult Index(string username)
         {
-            var currentUserId = User.GetLoggedInUserId<string>();
-            var blockedUserId = _userManager.FindByNameAsync(username).Result.Id;
-
-            var data = new ProfileModel
+            try
             {
-                User = _userManager.FindByNameAsync(username).Result,
-                UsersPosts = _context.Posts.AsNoTracking().Where(p => p.User.UserName.Equals(username)).Select(p => p).OrderByDescending(p => p.Date).ToList(),
-                UserLikedPosts = _context.Likes.AsNoTracking().Where(likes => likes.Liker.UserName.Equals(username)).Include(rat => rat.LikedPost.User).Select(likes => likes.LikedPost).OrderByDescending(p => p.Date).ToList(),
-                IsBlocked = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId) && f.BlockerId.Equals(currentUserId)).ToList().Count != 0,
-                BlockeByCount = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId)).Count(),
-                BlockedCount = _context.Blocks.AsNoTracking().Where(f => f.BlockerId.Equals(blockedUserId)).Count()
-            };
+                var currentUserId = User.GetLoggedInUserId<string>();
+                var blockedUserId = _userManager.FindByNameAsync(username).Result.Id;
 
-            return View("Profile", data);
+                var data = new ProfileModel
+                {
+                    User = _userManager.FindByNameAsync(username).Result,
+                    UsersPosts = _context.Posts.AsNoTracking().Where(p => p.User.UserName.Equals(username)).Select(p => p).OrderByDescending(p => p.Date).ToList(),
+                    UserLikedPosts = _context.Likes.AsNoTracking().Where(likes => likes.Liker.UserName.Equals(username)).Include(rat => rat.LikedPost.User).Select(likes => likes.LikedPost).OrderByDescending(p => p.Date).ToList(),
+                    IsBlocked = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId) && f.BlockerId.Equals(currentUserId)).ToList().Count != 0,
+                    BlockeByCount = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId)).Count(),
+                    BlockedCount = _context.Blocks.AsNoTracking().Where(f => f.BlockerId.Equals(blockedUserId)).Count()
+                };
+
+                return View("Profile", data);
+            } 
+            catch (NullReferenceException)
+            {
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorDisplayMessage = "That user does not exist, please check the username and try again." });
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorDisplayMessage = "We are looking into the issue." });
+            }
         }
 
         public IActionResult Block(string userId)

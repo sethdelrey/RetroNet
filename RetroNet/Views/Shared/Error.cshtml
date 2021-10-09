@@ -1,9 +1,16 @@
 ﻿@model ErrorViewModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "Error!";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">Something bad happened.</h2>
-
-<div>@Model.ErrorDisplayMessage</div>
+<div class="card card-tertiary">
+    <div class="card-header">
+        <span class="icon icon-xs w95-folder"></span>
+        <span class="ml-4 text-danger">Error! Something bad happened :(</span>
+    </div>
+    <div class="card-body">
+        <p class="card-text">
+            @Model.ErrorDisplayMessage
+        </p>
+    </div>
+</div>
