@@ -73,11 +73,11 @@ namespace _90sTest.Controllers
         public IActionResult Like(string postId)
         {
             var loggedInUserId = User.GetLoggedInUserId<string>();
-            var postIdInt = int.Parse(postId);
-            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId == postIdInt).ToArray();
+            //var postIdInt = int.Parse(postId);
+            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId.Equals(postId)).ToArray();
             if (postList != null && postList.Length != 0)
             {
-                var count = _context.Likes.Select(likes => likes).Where(likes => likes.Liker.Id.Equals(loggedInUserId) && likes.LikedPostId == postIdInt).ToList().Count;
+                var count = _context.Likes.Select(likes => likes).Where(likes => likes.Liker.Id.Equals(loggedInUserId) && likes.LikedPostId.Equals(postId)).ToList().Count;
                 if (count == 0)
                 {
                     postList[0].Likes++;
@@ -102,8 +102,8 @@ namespace _90sTest.Controllers
 
         public IActionResult Delete(string postId)
         {
-            var postIdInt = int.Parse(postId);
-            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId == postIdInt && p.User.UserName == User.GetLoggedInUserName()).ToArray();
+            //var postIdInt = int.Parse(postId);
+            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId.Equals(postId) && p.User.UserName == User.GetLoggedInUserName()).ToArray();
 
             if (postList != null && postList.Length != 0)
             {

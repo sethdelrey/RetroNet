@@ -1,0 +1,55 @@
+﻿@model ReportUserModel
+@using _90sTest.Data.Extension;
+@using _90sTest.Entities;
+@{ ViewData["Title"] = "Report User"; }
+
+<div class="card">
+    <div class="card-header">
+
+        @Model.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@Model.User.UserName>@@@Model.User.UserName</a>)
+        <div></div>
+    </div>
+        <div class="card-body card-text">
+            <div id="ViewBio">
+                @Model.User.Bio
+            </div>
+        </div>
+</div>
+<br />
+<div class="card card-tertiary">
+    <div class="card-header">
+        <span>What is the reason for the report?</span>
+    </div>
+    <div class="card-body">
+        <form asp-action="ReportUser" asp-controller="Report">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="card-text">
+                <div class="form-group">
+                @{
+                    var loggedInUserId = User.GetLoggedInUserId<string>();
+                }
+                <input asp-for="ReportedUser.UserId" value="@Model.User.Id" type="hidden" />
+                <input asp-for="ReportedUser.ReportingUserId" value="@loggedInUserId" type="hidden" />
+
+                <label asp-for="ReportedUser.Type"></label>
+                <select asp-for="ReportedUser.Type" asp-items="Html.GetEnumSelectList<ReportType>()">
+                </select>
+                <span asp-validation-for="ReportedUser.Type" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ReportedUser.Description"></label>
+                    <textarea asp-for="ReportedUser.Description" class="form-control"></textarea>
+                    <span asp-validation-for="ReportedUser.Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="d-flex mt-3">
+                <button class="btn btn-sm mr-2 btn-primary border-dark" type="submit">Report</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

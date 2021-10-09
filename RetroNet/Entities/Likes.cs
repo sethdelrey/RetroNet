@@ -11,7 +11,7 @@ namespace _90sTest.Entities
         public string LikerId { get; set; }
         public RetroNetUser Liker { get; set; }
 
-        public int LikedPostId { get; set; }
+        public string LikedPostId { get; set; }
         public Post LikedPost { get; set; }
 
 

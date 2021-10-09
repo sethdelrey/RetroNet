@@ -18,7 +18,7 @@ namespace _90sTest.Data
         public DbSet<Likes> Likes { get; set; }
         public DbSet<Blocks> Blocks { get; set; }
         public DbSet<ReportedPost> ReportedPosts {get; set;}
-
+        public DbSet<ReportedUser> ReportedUsers { get; set; }
 
         public RetroNetContext(DbContextOptions options)
             : base(options)

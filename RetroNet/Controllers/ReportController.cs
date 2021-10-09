@@ -6,10 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace _90sTest.Controllers
 {
@@ -35,8 +33,8 @@ namespace _90sTest.Controllers
         {
             try
             {
-                var postIdInt = int.Parse(postId);
-                var reportedPost = _context.Posts.AsNoTracking().Where(p => p.PostId == postIdInt).Include(p => p.User).FirstOrDefault();
+                //var postIdInt = int.Parse(postId);
+                var reportedPost = _context.Posts.AsNoTracking().Where(p => p.PostId.Equals(postId)).Include(p => p.User).FirstOrDefault();
                 return View("Post", new ReportPostModel() { Post = reportedPost });
             }
             catch
@@ -49,7 +47,7 @@ namespace _90sTest.Controllers
         {
             try
             {
-                data.ReportedPost.Id = Guid.NewGuid();
+                data.ReportedPost.Id = Guid.NewGuid().ToString();
                 _context.ReportedPosts.Add(data.ReportedPost);
                 _context.SaveChanges();
             } catch
@@ -60,9 +58,34 @@ namespace _90sTest.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult UserReporting()
+        public IActionResult UserReporting(string userId)
         {
-            return View("User");
+            try
+            {
+                //var userIdInt = int.Parse(userId);
+                var reportedUser = _context.Users.AsNoTracking().Where(u => u.Id.Equals(userId)).FirstOrDefault();
+                return View("User", new ReportUserModel() { User = reportedUser });
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorDisplayMessage = "Invalid User Id!" });
+            }
+        }
+
+        public IActionResult ReportUser(ReportUserModel data)
+        {
+            try
+            {
+                data.ReportedUser.Id = Guid.NewGuid().ToString();
+                _context.ReportedUsers.Add(data.ReportedUser);
+                _context.SaveChanges();
+            }
+            catch
+            {
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorDisplayMessage = "Your report did not go through! We are looking into the issue." });
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -10,7 +10,8 @@ namespace _90sTest.Entities
     public class Post
     {
         [Key]
-        public int PostId { get; set; }
+        [MaxLength(36)]
+        public string PostId { get; set; }
 
         public string Content { get; set; }
 

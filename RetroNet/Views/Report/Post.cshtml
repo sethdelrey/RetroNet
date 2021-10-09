@@ -1,10 +1,7 @@
 ﻿@model ReportPostModel
 @using _90sTest.Data.Extension;
 @using _90sTest.Entities;
-@{ ViewData["Title"] = "Report User"; }
-
-
-<h2>Report this post?</h2>
+@{ ViewData["Title"] = "Report Post"; }
 
 <div class="card">
     <div class="card-header">
@@ -36,7 +33,7 @@
                     <input asp-for="ReportedPost.PostId" value="@Model.Post.PostId" type="hidden" />
 
                     <label asp-for="ReportedPost.Type"></label>
-                    <select asp-for="ReportedPost.Type" asp-items="Html.GetEnumSelectList<ReportedPost.ReportType>()">
+                    <select asp-for="ReportedPost.Type" asp-items="Html.GetEnumSelectList<ReportType>()">
                     </select>
                     <span asp-validation-for="ReportedPost.Type" class="text-danger"></span>
 

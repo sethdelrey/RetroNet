@@ -8,6 +8,23 @@
 <div class="card">
     <div class="card-header">
         @Model.User.Name (@@@Model.User.UserName)
+        @if (!IsUsersProfile)
+        {
+        <section class="dropright" style="float:right; color:black;">
+            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ...
+            </a>
+            <div class="dropdown-menu">
+                @{
+                    var ReportUserParameters = new Dictionary<string, string>()
+                                                                {
+                                    { "userId",  Model.User.Id }
+                                };
+                }
+                <a class="dropdown-item" asp-controller="Report" asp-action="UserReporting" asp-all-route-data="ReportUserParameters">Report User</a>
+            </div>
+        </section>
+                    }
     </div>
     <div class="card-body card-text">
         <div id="ViewBio">
@@ -69,20 +86,6 @@
             <div class="card">
                 <div class="card-header">
                     @Model.User.Name (@@@Model.User.UserName)
-                    <section class="dropright" style="float:right; color:black;">
-                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            ...
-                        </a>
-                        <div class="dropdown-menu">
-                            @{
-                                var ReportUserParameters = new Dictionary<string, string>()
-                                                        {
-                                    { "userId",  Model.User.Id }
-                                };
-                            }
-                            <a class="dropdown-item" asp-controller="Report" asp-action="UserReporting" asp-all-route-data="ReportUserParameters">Report User</a>
-                        </div>
-                    </section>
                 </div>
                 <div class="card-body card-text">
                     <p>

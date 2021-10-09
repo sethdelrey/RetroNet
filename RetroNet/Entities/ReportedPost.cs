@@ -5,14 +5,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace _90sTest.Entities
 {
     public class ReportedPost
     {
-        public Guid Id { get; set; }
+        [Key]
+        [MaxLength(36)]
+        public string Id { get; set; }
 
-        public int PostId { get; set; }
+        [ForeignKey("Posts")]
+        [Required]
+        [MaxLength(36)]
+        public string PostId { get; set; }
+
+        [ForeignKey("AspNetUsers")]
+        [Required]
+        [MaxLength(36)]
+        public string ReportingUserId { get; set; }
 
         [DisplayName("Desciption")]
         [Required(ErrorMessage = "Please write a short description of your grievances.")]
@@ -22,14 +33,5 @@ namespace _90sTest.Entities
         [DisplayName("What is wrong about the post? (Select one)")]
         [Required(ErrorMessage = "Please select one.")]
         public ReportType Type { get; set; }
-
-        public enum ReportType
-        {
-            Bot,
-            Offensive,
-            Spam,
-            Dox,
-            Violence
-        }
     }
 }
