@@ -8,6 +8,7 @@ namespace _90sTest.Models
 {
     public class ReportPostModel
     {
-        public Post ReportedPost { get; set; } 
+        public Post Post { get; set; } 
+        public ReportedPost ReportedPost { get; set; }
     }
 }

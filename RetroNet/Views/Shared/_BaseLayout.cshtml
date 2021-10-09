@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - 90s Net</title>
     <!-- Bootstrap CSS file -->
-    @*<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">*@
+    @*
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">*@
     <!-- Pixel CSS -->
     <link type="text/css" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css">
     <link type="text/css" rel="stylesheet" href="~/css/pixel.css">
@@ -16,13 +17,7 @@
     <header>
         <h1>90s Net</h1>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            <div class="container" style="margin-top:30px;">
-                @RenderBody()
-            </div>
-        </main>
-    </div>
+    @RenderBody()
 
     <script src="~/lib/jquery/dist/jquery-3.5.0.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

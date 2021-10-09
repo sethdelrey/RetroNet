@@ -1,6 +1,4 @@
-﻿@using _90sTest.Data.Extension
-@using _90sTest.Models
-@{
+﻿@{
     if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
     {
         Layout = (string)parentLayout;
@@ -10,19 +8,8 @@
         Layout = "/Views/Shared/_Layout.cshtml";
     }
 }
-<div>
-    <div class="row">
-        <div class="col-md-3">
-            @{
-                var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
-            }
-            <partial name="_MainNav" model="navModel" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
-        </div>
-    </div>
-</div>
+
+@RenderBody()
 
 @section Scripts {
     @RenderSection("Scripts", required: false)

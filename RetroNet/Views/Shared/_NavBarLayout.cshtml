@@ -1,0 +1,23 @@
+﻿@using _90sTest.Data.Extension;
+@{
+    Layout = "_BaseLayout";
+}
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="container" style="margin-top:30px;">
+            <div class="row">
+                @{
+                    var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
+                }
+                <partial name="_MainNav" model="navModel" />
+                <div class="col-sm-9 mb-4 mb-lg-0 feed">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

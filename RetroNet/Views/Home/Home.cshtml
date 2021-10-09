@@ -6,83 +6,74 @@
 
 @{ Html.Html5DateRenderingMode = Html5DateRenderingMode.Rfc3339; }
 
-<div class="row">
-    @{
-        var navModel = new MainNavPartialViewModel { Username = User.GetLoggedInUserName() };
-    }
-    <partial name="_MainNav" model="navModel" />
-    <div class="col-sm-9 mb-4 mb-lg-0 feed">
-        <div class="card">
-            <div class="card-header">
-                New Post
+<div class="card">
+    <div class="card-header">
+        New Post
+    </div>
+    <div class="card-body">
+        <form asp-action="Submit" asp-controller="Home">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="card-text">
+                @Html.TextAreaFor(model => model.NewPostContent, new { @class = "form-control", @rows = 4 })
+                <span asp-validation-for="NewPostContent" class="text-danger"></span>
             </div>
-            <div class="card-body">
-                <form asp-action="Submit" asp-controller="Home">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="card-text">
-                        @Html.TextAreaFor(model => model.NewPostContent, new { @class = "form-control", @rows = 4 })
-                        <span asp-validation-for="NewPostContent" class="text-danger"></span>
-                    </div>
-                    <div class="d-flex justify-content-end mt-3">
-                        <button class="btn btn-sm mr-2 btn-primary border-dark" type="submit">Post</button>
-                    </div>
-                </form>
+            <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-sm mr-2 btn-primary border-dark" type="submit">Post</button>
             </div>
-        </div>
-        <br />
-        @foreach (_90sTest.Entities.Post post in Model.Posts)
-        {
-            var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
-            var declineParams = new Dictionary<string, string>()
-            {
+        </form>
+    </div>
+</div>
+<br />
+@foreach (_90sTest.Entities.Post post in Model.Posts)
+{
+    var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
+    var declineParams = new Dictionary<string, string>()
+{
                     { "postId", post.PostId.ToString() }
                 };
 
 
-            <div class="card">
-                <div class="card-header">
+    <div class="card">
+        <div class="card-header">
 
-                    @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
-                    @*<a style="float:right;">...</a>*@
-                    <section class="dropright" style="float:right; color:black;">
-                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            ...
-                        </a>
-                        <div class="dropdown-menu">
-                            @{
-                                var ReportPostParameters = new Dictionary<string, string>()
-                                {
+            @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
+            <section class="dropright" style="float:right; color:black;">
+                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    ...
+                </a>
+                <div class="dropdown-menu">
+                    @{
+                        var ReportPostParameters = new Dictionary<string, string>()
+                                        {
                                     { "postId",  post.PostId.ToString() }
                                 };
-                            }
-                            <a class="dropdown-item" asp-controller="Report" asp-action="PostReporting" asp-all-route-data="ReportPostParameters">Report Post</a>
-                        </div>
-                    </section>
+                    }
+                    <a class="dropdown-item" asp-controller="Report" asp-action="PostReporting" asp-all-route-data="ReportPostParameters">Report Post</a>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">
-                        @post.Content
-                    </p>
-                    <div class="d-flex justify-content-end mt-3">
-                        <time datetime="@post.Date.ToString()" date-format="">@post.Date.ToString()</time>
-                        &nbsp;
-                        <div>@post.Likes Likes</div>
-                        &nbsp;
-                        @if (!IsUsersPost)
-                        {
-                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
-                        }
-                    </div>
-                </div>
+            </section>
+        </div>
+        <div class="card-body">
+            <p class="card-text">
+                @post.Content
+            </p>
+            <div class="d-flex justify-content-end mt-3">
+                <time datetime="@post.Date.ToString()" date-format="">@post.Date.ToString()</time>
+                &nbsp;
+                <div>@post.Likes Likes</div>
+                &nbsp;
+                @if (!IsUsersPost)
+                {
+                    <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
+                }
             </div>
-            <br>
-        }
+        </div>
     </div>
-</div>
+    <br>
+}
 
 <script>
 
