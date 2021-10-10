@@ -38,7 +38,7 @@ namespace _90sTest.Controllers
                 var data = new ProfileModel
                 {
                     User = _userManager.FindByNameAsync(username).Result,
-                    UsersPosts = _context.Posts.AsNoTracking().Where(p => p.User.UserName.Equals(username)).Select(p => p).OrderByDescending(p => p.Date).ToList(),
+                    UsersPosts = _context.Posts.AsNoTracking().Where(p => p.User.UserName.Equals(username)).Include(p => p.User).OrderByDescending(p => p.Date).ToList(),
                     UserLikedPosts = _context.Likes.AsNoTracking().Where(likes => likes.Liker.UserName.Equals(username)).Include(rat => rat.LikedPost.User).Select(likes => likes.LikedPost).OrderByDescending(p => p.Date).ToList(),
                     IsBlocked = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId) && f.BlockerId.Equals(currentUserId)).ToList().Count != 0,
                     BlockeByCount = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId)).Count(),

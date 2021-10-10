@@ -97,7 +97,7 @@ namespace _90sTest.Controllers
 
             var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
-            return RedirectToAction("Home");
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(string postId)
@@ -114,7 +114,7 @@ namespace _90sTest.Controllers
 
             var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
-            return RedirectToAction("Home");
+            return RedirectToAction("Index");
         }
     }
 }

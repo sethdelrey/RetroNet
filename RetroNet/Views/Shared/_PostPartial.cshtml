@@ -1,0 +1,43 @@
+﻿@model PostModel
+
+@using _90sTest.Data.Extension;
+@{
+    var IsUsersPost = Model.Post.User.Id.Equals(User.GetLoggedInUserId<string>());
+}
+
+<div class="card">
+    <div class="card-header">
+        @Model.Post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@Model.Post.User.UserName>@@@Model.Post.User.UserName</a>)
+        @if (!IsUsersPost)
+        {
+            <section class="dropright" style="float:right; color:black;">
+                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    ...
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" asp-controller="Report" asp-action="PostReporting" asp-route-postid="@Model.Post.PostId">Report Post</a>
+                    <a class="dropdown-item" asp-controller="Post" asp-action="Index" asp-route-postid="@Model.Post.PostId">View Post</a>
+                </div>
+            </section>
+        }
+    </div>
+    <div class="card-body card-text">
+        <p>
+            @Model.Post.Content
+        </p>
+        <div class="d-flex justify-content-end mt-3">
+            <time datetime="@Model.Post.Date.ToString()" date-format="">@Model.Post.Date.ToString()</time>
+            &nbsp;
+            <div>@Model.Post.Likes Likes</div>
+            &nbsp;
+            @if (!IsUsersPost)
+            {
+                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-route-postid=@Model.Post.PostId>Like</a>
+            }
+            else
+            {
+                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-route-postid=@Model.Post.PostId>Delete</a>
+            }
+        </div>
+    </div>
+</div>

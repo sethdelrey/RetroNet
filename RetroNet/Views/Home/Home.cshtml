@@ -1,5 +1,6 @@
 ﻿@model FeedModel
-@using _90sTest.Data.Extension;
+@using _90sTest.Entities;
+
 @{
     ViewData["Title"] = "Home";
 }
@@ -24,53 +25,11 @@
     </div>
 </div>
 <br />
-@foreach (_90sTest.Entities.Post post in Model.Posts)
+@foreach (Post post in Model.Posts)
 {
-    var IsUsersPost = post.User.Id.Equals(User.GetLoggedInUserId<string>());
-    var declineParams = new Dictionary<string, string>()
-        {
-            { "postId", post.PostId.ToString() }
-        };
-    <div class="card">
-        <div class="card-header">
-            @post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@post.User.UserName>@@@post.User.UserName</a>)
-            @if (!IsUsersPost) { 
-                <section class="dropright" style="float:right; color:black;">
-                    <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        ...
-                    </a>
-                    <div class="dropdown-menu">
-                        @{
-                            var ReportPostParameters = new Dictionary<string, string>()
-                                            {
-                                        { "postId",  post.PostId.ToString() }
-                                    };
-                        }
-                        <a class="dropdown-item" asp-controller="Report" asp-action="PostReporting" asp-all-route-data="ReportPostParameters">Report Post</a>
-                    </div>
-                </section>
-            }
-        </div>
-        <div class="card-body">
-            <p class="card-text">
-                @post.Content
-            </p>
-            <div class="d-flex justify-content-end mt-3">
-                <time datetime="@post.Date.ToString()" date-format="">@post.Date.ToString()</time>
-                &nbsp;
-                <div>@post.Likes Likes</div>
-                &nbsp;
-                @if (!IsUsersPost)
-                {
-                    <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
-                }
-                else
-                {
-                    <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
-                }
-            </div>
-        </div>
-    </div>
+    var postModel = new PostModel() { Post = post };
+
+    <partial name="_PostPartial" model="postModel" />
     <br>
 }
 
@@ -92,4 +51,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <partial name="_PostTimeScriptsPartial" />
 }
