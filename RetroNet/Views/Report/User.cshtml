@@ -25,16 +25,20 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="card-text">
                 <div class="form-group">
-                @{
-                    var loggedInUserId = User.GetLoggedInUserId<string>();
-                }
-                <input asp-for="ReportedUser.UserId" value="@Model.User.Id" type="hidden" />
-                <input asp-for="ReportedUser.ReportingUserId" value="@loggedInUserId" type="hidden" />
+                    @{
+                        var loggedInUserId = User.GetLoggedInUserId<string>();
+                        var newGuid = Guid.NewGuid().ToString();
+                        var dateNow = DateTime.Now;
+                    }
+                    <input asp-for="ReportedUser.Id" value="@newGuid" type="hidden" />
+                    <input asp-for="ReportedUser.UserId" value="@Model.User.Id" type="hidden" />
+                    <input asp-for="ReportedUser.ReportingUserId" value="@loggedInUserId" type="hidden" />
+                    <input asp-for="ReportedUser.ReportTime" value="@dateNow" type="hidden" />
 
-                <label asp-for="ReportedUser.Type"></label>
-                <select asp-for="ReportedUser.Type" asp-items="Html.GetEnumSelectList<ReportType>()">
-                </select>
-                <span asp-validation-for="ReportedUser.Type" class="text-danger"></span>
+                    <label asp-for="ReportedUser.Type"></label>
+                    <select asp-for="ReportedUser.Type" asp-items="Html.GetEnumSelectList<ReportType>()">
+                    </select>
+                    <span asp-validation-for="ReportedUser.Type" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="ReportedUser.Description"></label>

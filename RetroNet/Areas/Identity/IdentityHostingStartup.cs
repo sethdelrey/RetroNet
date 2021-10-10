@@ -36,6 +36,7 @@ namespace _90sTest.Areas.Identity
                         options.SignIn.RequireConfirmedAccount = true;
                         options.User.RequireUniqueEmail = true;
                     })
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<RetroNetContext>()
                     .AddDefaultTokenProviders();
 

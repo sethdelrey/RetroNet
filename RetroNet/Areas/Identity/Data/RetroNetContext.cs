@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace _90sTest.Data
 {
-    public class RetroNetContext : IdentityDbContext<RetroNetUser>
+    public class RetroNetContext : IdentityDbContext<RetroNetUser, IdentityRole, string>
     {
 
         public DbSet<Post> Posts { get; set; }
@@ -56,7 +56,36 @@ namespace _90sTest.Data
                 .HasOne(f => f.Blocker)
                 .WithMany(u => u.Following)
                 .HasForeignKey(f => f.BlockerId);
+            var users = new[] {new RetroNetUser()
+            {
+                Id = "e1f77fa2-e9c9-4975-9e49-345fc0623f2c",
+                Name = "Seth 'Rat' Richard",
+                DOB = new DateTime(),
+                Bio = "What it dooooo",
+                UserName = "rat",
+                NormalizedUserName = "RAT",
+                Email = "holdenbrown10@yahoo.com",
+                NormalizedEmail = "HOLDENBROWN10@YAHOO.COM",
+                EmailConfirmed = true,
+                PasswordHash = "AQAAAAEAACcQAAAAEEpY83n0nOjxYJXjRr7hPmLsuLbnVJzoWdhM9gLSKptvLBU3h0SgmkbmXWtW65RtYw==",
+                SecurityStamp = "RQ3LPAWH7LT6NYWM2JBVNQK4YZ37DFQR",
+                ConcurrencyStamp = "18cd32ec-3054-4176-96a2-24615d815da0",
+                PhoneNumber = "2259317020",
+                PhoneNumberConfirmed = false,
+                TwoFactorEnabled = false,
+                LockoutEnd = null,
+                LockoutEnabled = false,
+                AccessFailedCount = 0
 
+            } };
+
+            var roles = new[] { new IdentityRole("Admin") };
+
+            var userRoles = new[] { new IdentityUserRole<string>() { RoleId = roles[0].Id, UserId = users[0].Id } };
+
+            builder.Entity<RetroNetUser>().HasData(users);
+            builder.Entity<IdentityRole>().HasData(roles);
+            builder.Entity<IdentityUserRole<string>>().HasData(userRoles);
 
         }
     }

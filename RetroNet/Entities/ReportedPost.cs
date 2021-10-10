@@ -33,5 +33,9 @@ namespace _90sTest.Entities
         [DisplayName("What is wrong about the post? (Select one)")]
         [Required(ErrorMessage = "Please select one.")]
         public ReportType Type { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        public DateTime ReportTime { get; set; }
     }
 }

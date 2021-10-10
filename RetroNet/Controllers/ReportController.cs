@@ -1,5 +1,6 @@
 ﻿using _90sTest.Areas.Identity.Data;
 using _90sTest.Data;
+using _90sTest.Data.Extension;
 using _90sTest.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -47,7 +48,6 @@ namespace _90sTest.Controllers
         {
             try
             {
-                data.ReportedPost.Id = Guid.NewGuid().ToString();
                 _context.ReportedPosts.Add(data.ReportedPost);
                 _context.SaveChanges();
             } catch
@@ -62,7 +62,6 @@ namespace _90sTest.Controllers
         {
             try
             {
-                //var userIdInt = int.Parse(userId);
                 var reportedUser = _context.Users.AsNoTracking().Where(u => u.Id.Equals(userId)).FirstOrDefault();
                 return View("User", new ReportUserModel() { User = reportedUser });
             }
@@ -76,7 +75,6 @@ namespace _90sTest.Controllers
         {
             try
             {
-                data.ReportedUser.Id = Guid.NewGuid().ToString();
                 _context.ReportedUsers.Add(data.ReportedUser);
                 _context.SaveChanges();
             }

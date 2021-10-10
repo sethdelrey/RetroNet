@@ -1,0 +1,34 @@
+﻿@model PostModel
+@using _90sTest.Data.Extension;
+@{
+    var IsUsersProfile = Model.Post.User.Id.Equals(User.GetLoggedInUserId<string>());
+    var declineParams = new Dictionary<string, string>()
+{
+        { "postId", Model.Post.PostId.ToString() }
+    };
+}
+
+<div class="card">
+    <div class="card-header">
+        @Model.Post.User.Name (@@@Model.Post.User.UserName)
+    </div>
+    <div class="card-body card-text">
+        <p>
+            @Model.Post.Content
+        </p>
+        <div class="d-flex justify-content-end mt-3">
+            <time datetime="@Model.Post.Date.ToString()" date-format="">@Model.Post.Date.ToString()</time>
+            &nbsp;
+            <div>@Model.Post.Likes Likes</div>
+            &nbsp;
+            @if (!IsUsersProfile)
+            {
+                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-all-route-data="declineParams">Like</a>
+            }
+            else
+            {
+                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Delete" asp-controller="Home" asp-all-route-data="declineParams">Delete</a>
+            }
+        </div>
+    </div>
+</div>

@@ -30,7 +30,15 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="card-text">
                 <div class="form-group">
+                    @{
+                        var loggedInUserId = User.GetLoggedInUserId<string>();
+                        var newGuid = Guid.NewGuid().ToString();
+                        var dateNow = DateTime.Now;
+                    }
+                    <input asp-for="ReportedPost.Id" value="@newGuid" type="hidden" />
                     <input asp-for="ReportedPost.PostId" value="@Model.Post.PostId" type="hidden" />
+                    <input asp-for="ReportedPost.ReportingUserId" value="@loggedInUserId" type="hidden" />
+                    <input asp-for="ReportedPost.ReportTime" value="@dateNow" type="hidden" />
 
                     <label asp-for="ReportedPost.Type"></label>
                     <select asp-for="ReportedPost.Type" asp-items="Html.GetEnumSelectList<ReportType>()">
