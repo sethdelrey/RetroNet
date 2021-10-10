@@ -28,11 +28,11 @@
         <div class="d-flex justify-content-end mt-3">
             <time datetime="@Model.Post.Date.ToString()" date-format="">@Model.Post.Date.ToString()</time>
             &nbsp;
-            <div>@Model.Post.Likes Likes</div>
+            <div><span id="@Model.Post.PostId-Likes">@Model.Post.Likes</span> Likes</div>
             &nbsp;
             @if (!IsUsersPost)
             {
-                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Like" asp-controller="Home" asp-route-postid=@Model.Post.PostId>Like</a>
+                <button class="btn btn-sm mr-2 btn-primary border-dark" id="@Model.Post.PostId-LikeButton" onclick="likePost('@Model.Post.PostId')">Like</button>
             }
             else
             {
@@ -41,3 +41,4 @@
         </div>
     </div>
 </div>
+

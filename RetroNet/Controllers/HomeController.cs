@@ -70,6 +70,44 @@ namespace _90sTest.Controllers
             return RedirectToAction("Home");
         }
 
+        [HttpPost]
+        public int LikeAjax(string postId)
+        {
+            
+            var loggedInUserId = User.GetLoggedInUserId<string>();
+            var post = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId.Equals(postId)).FirstOrDefault();
+            
+            if (post != null)
+            {
+                var count = _context.Likes.Where(likes => likes.Liker.Id.Equals(loggedInUserId) && likes.LikedPostId.Equals(postId)).ToList().Count;
+                if (count == 0)
+                {
+                    post.Likes++;
+                    _context.Posts.Update(post);
+
+
+                    _context.Likes.Add(new Likes()
+                    {
+                        LikerId = loggedInUserId,
+                        LikedPostId = post.PostId
+                    });
+
+                    _context.SaveChanges();
+                    return post.Likes;
+                }
+                else
+                {
+                    return -1;
+                    //throw new Exception("You've already liked this post.");
+                }
+            }
+            else
+            {
+                return -1;
+                //throw new Exception("This post does not exist.");
+            }
+        }
+
         public IActionResult Like(string postId)
         {
             var loggedInUserId = User.GetLoggedInUserId<string>();

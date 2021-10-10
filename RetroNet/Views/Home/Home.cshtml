@@ -33,23 +33,8 @@
     <br>
 }
 
-<script>
-
-    var d = new Date();
-    var utcHours = d.getTimezoneOffset() / 60;
-
-    var timeElements = document.getElementsByTagName("time");
-
-    for (var i = 0, max = timeElements.length; i < max; i++) {
-        var tempDate = new Date(timeElements[i].dateTime);
-        tempDate.setTime(tempDate.getTime() - (utcHours * 60 * 60 * 1000));
-        timeElements[i].dateTime = tempDate.toLocaleString();
-        timeElements[i].innerText = timeElements[i].dateTime;
-    }
-
-</script>
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <partial name="_PostTimeScriptsPartial" />
+    <partial name="_LikeAjax" />
 }

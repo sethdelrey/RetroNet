@@ -1,0 +1,16 @@
+﻿<script>
+    function likePost(postId) {
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("LikeAjax")?postId=" + postId,
+            processData: false,
+            data: $.param({ id: postId }),
+            success: function (result) {
+                if (result != -1) {
+                    $("#" + postId + "-Likes").text(result);
+                }
+                $("#" + postId + "-LikeButton").prop("disabled", true);
+            }
+        })
+    }
+</script>
