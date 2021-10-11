@@ -69,7 +69,7 @@ namespace _90sTest.Controllers
             // Get posts and users from db
             var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
-            return RedirectToAction("Home");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

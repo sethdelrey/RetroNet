@@ -16,7 +16,7 @@
     "health-check-url" : "/",
     "instance-type"    : "t2.micro",
     "key-pair"         : "CSC2610-SethRichard-01",
-    "configuration"    : "Release",
+    "configuration"    : "Debug",
     "framework"        : "net5.0",
     "self-contained"   : false,
     "enhanced-health-type" : "basic",

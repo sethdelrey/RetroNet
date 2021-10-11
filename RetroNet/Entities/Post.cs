@@ -35,6 +35,7 @@ namespace _90sTest.Entities
 
         public Post(string _content, RetroNetUser _user, DateTime _date)
         {
+            PostId = Guid.NewGuid().ToString();
             Content = _content;
             User = _user;
             Date = _date;
