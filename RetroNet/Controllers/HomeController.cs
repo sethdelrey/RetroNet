@@ -29,19 +29,21 @@ namespace _90sTest.Controllers
 
         public IActionResult Index()
         {
-            // NEED TO OPTIMIZE THIS
             var userId = User.GetLoggedInUserId<string>();
-            var blockListPart1 = _context.Blocks.AsNoTracking().Include(block => block.User).Where(block => block.BlockerId.Equals(userId)).Select(block => block.User.Id).ToList();
-            var blockListPart2 = _context.Blocks.AsNoTracking().Include(block => block.Blocker).Where(block => block.UserId.Equals(userId)).Select(block => block.Blocker.Id).ToList();
-            
-            blockListPart1.AddRange(blockListPart2);
+            var oneWeekAgo = DateTime.Now.AddDays(-1);
 
-            var blockList = blockListPart1.Distinct().ToList();
+            var blockList = _context.Blocks.AsNoTracking()
+                .Include(bl => bl.Blocker)
+                .Where(bl => bl.UserId.Equals(userId)).Select(bl => bl.Blocker.Id).ToList();
             
-            // Need to add paging to this so that the hit is smaller and add "hot" posts to it.
-            var postList = _context.Posts.AsNoTracking().Include(post => post.User).Where(post => !(blockList.Any(bl => bl.Equals(post.User.Id)))).ToList();
+            var recentList = _context.Posts.AsNoTracking().Include(post => post.User).Where(post => !blockList.Any(bl => bl.Equals(post.User.Id))).ToList();
 
-            var feed = new FeedModel() { Posts = postList.OrderByDescending(p => p.Date).ToArray() };
+            var hotList = recentList.OrderByDescending(p => p.Likes).Take(25);
+
+            var feed = new FeedModel() {
+                Posts = recentList.OrderByDescending(p => p.Date).ToArray(),
+                HotPosts = hotList.ToArray()
+            };
 
             return View("Home", feed);
         }
