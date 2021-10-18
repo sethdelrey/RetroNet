@@ -26,7 +26,7 @@ namespace _90sTest.Entities
 
         [DisplayName("Desciption")]
         [Required(ErrorMessage = "Please write a short description of your grievances.")]
-        [MaxLength(1000)]
+        [MaxLength(1000, ErrorMessage = "The description has to be less than 1000 characters.")]
         public string Description { get; set; }
 
         [DisplayName("What is wrong about the user? (Select one)")]

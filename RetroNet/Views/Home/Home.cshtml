@@ -15,6 +15,8 @@
         <form asp-action="Submit" asp-controller="Home">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="card-text">
+                <label asp-for="NewPostContent">Scream into the void:</label>
+                <br />
                 @Html.TextAreaFor(model => model.NewPostContent, new { @class = "form-control", @rows = 4 })
                 <span asp-validation-for="NewPostContent" class="text-danger"></span>
             </div>

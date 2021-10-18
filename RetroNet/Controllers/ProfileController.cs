@@ -59,7 +59,8 @@ namespace _90sTest.Controllers
 
         public IActionResult UserById(string userId)
         {
-            try
+            return Index(_userManager.FindByIdAsync(userId).Result.UserName);
+            /*try
             {
                 var currentUserId = User.GetLoggedInUserId<string>();
 
@@ -82,7 +83,7 @@ namespace _90sTest.Controllers
             catch
             {
                 return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorDisplayMessage = "We are looking into the issue." });
-            }
+            }*/
         }
 
         public IActionResult Block(string userId)
