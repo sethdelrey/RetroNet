@@ -1,8 +1,20 @@
 ﻿@model PostModel
+@*@using _90sTest.DAL
+@inject IPostRepository postRepo*@
 
 @using _90sTest.Data.Extension;
 @{
     var IsUsersPost = Model.Post.User.Id.Equals(User.GetLoggedInUserId<string>());
+    var UnLikeBlockOrNone = "none";
+    var LikeBlockOrNone = "none";
+    if (!IsUsersPost)
+    {
+        //var HasUserLikedPost = postRepo.HasUserLikedPost(Model.Post.PostId, User.GetLoggedInUserId<string>());
+        var likePost = Model.Post.LikedPosts.Where(l => l.LikerId.Equals(User.GetLoggedInUserId<string>())).FirstOrDefault();
+        var HasUserLikedPost = likePost != null;
+        LikeBlockOrNone = !HasUserLikedPost ? "block" : "none";
+        UnLikeBlockOrNone = HasUserLikedPost ? "block" : "none";
+    }
 }
 
 <div class="card">
@@ -34,7 +46,8 @@
             &nbsp;
             @if (!IsUsersPost)
             {
-                <button class="btn btn-sm mr-2 btn-primary border-dark" id="@Model.Post.PostId-LikeButton" onclick="likePost('@Model.Post.PostId')">Like</button>
+                <button class="btn btn-sm mr-2 btn-primary border-dark" id="@Model.Post.PostId-LikeButton" onclick="likePost('@Model.Post.PostId')" style="display: @LikeBlockOrNone">Like</button>
+                <button class="btn btn-sm mr-2 btn-primary border-dark" id="@Model.Post.PostId-UnLikeButton" onclick="unlikePost('@Model.Post.PostId')" style="display: @UnLikeBlockOrNone">Unlike</button>
             }
             else
             {

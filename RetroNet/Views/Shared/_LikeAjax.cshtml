@@ -9,8 +9,26 @@
                 if (result != -1) {
                     $("#" + postId + "-Likes").text(result);
                 }
-                $("#" + postId + "-LikeButton").prop("disabled", true);
+                $("#" + postId + "-LikeButton").hide();
+                $("#" + postId + "-UnLikeButton").show();
             }
+        })
+    }
+
+    function unlikePost(postId) {
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("UnLikeAjax")?postId=" + postId,
+            processData: false,
+            data: $.param({ id: postId }),
+            success: function (result) {
+                if (result != -1) {
+                    $("#" + postId + "-Likes").text(result);
+                }
+                $("#" + postId + "-LikeButton").show();
+                $("#" + postId + "-UnLikeButton").hide();
+            }
+
         })
     }
 </script>

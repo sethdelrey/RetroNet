@@ -35,8 +35,11 @@ namespace _90sTest.Controllers
             var blockList = _context.Blocks.AsNoTracking()
                 .Include(bl => bl.Blocker)
                 .Where(bl => bl.UserId.Equals(userId)).Select(bl => bl.Blocker.Id).ToList();
-            
-            var recentList = _context.Posts.AsNoTracking().Include(post => post.User).Where(post => !blockList.Any(bl => bl.Equals(post.User.Id))).ToList();
+
+           /* var likeList = _context.Likes.AsNoTracking()
+                .Where(l => l.LikerId.Equals(userId)).ToList();
+*/
+            var recentList = _context.Posts.AsNoTracking().Include(post => post.User).Include(post => post.LikedPosts).Where(post => !blockList.Any(bl => bl.Equals(post.User.Id))).ToList();
 
             var hotList = recentList.OrderByDescending(p => p.Likes).Take(25);
 
@@ -101,6 +104,44 @@ namespace _90sTest.Controllers
                 {
                     return -1;
                     //throw new Exception("You've already liked this post.");
+                }
+            }
+            else
+            {
+                return -1;
+                //throw new Exception("This post does not exist.");
+            }
+        }
+
+        [HttpPost]
+        public int UnLikeAjax(string postId)
+        {
+            var loggedInUserId = User.GetLoggedInUserId<string>();
+            var post = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId.Equals(postId)).FirstOrDefault();
+            
+            if (post != null)
+            {
+                var count = _context.Likes.Where(likes => likes.Liker.Id.Equals(loggedInUserId) && likes.LikedPostId.Equals(postId)).ToList().Count;
+                if (count != 0)
+                {
+                    post.Likes--;
+                    _context.Posts.Update(post);
+
+                    //Likes like = _context.Likes.Find(postId, loggedInUserId);
+                    var like = _context.Likes.Where(l => l.LikerId.Equals(loggedInUserId) && l.LikedPostId.Equals(postId)).FirstOrDefault();
+                    _context.Likes.Remove(like);
+
+                    /*var removeLikes = new Likes() { LikedPostId = postId, LikerId = loggedInUserId };
+                    _context.Likes.Attach(removeLikes);
+                    _context.Likes.Remove(removeLikes);*/
+
+                    _context.SaveChanges();
+                    return post.Likes;
+                }
+                else
+                {
+                    return -1;
+                    //throw new Exception("You've never liked this post.");
                 }
             }
             else
