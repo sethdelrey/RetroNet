@@ -17,9 +17,9 @@
     }
 }
 
-<div class="card">
-    <div class="card-header">
-        @Model.Post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@Model.Post.User.UserName>@@@Model.Post.User.UserName</a>)
+<div class="card card-tertiary">
+    <div class="card-header WhiteHeader">
+        @Model.Post.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@Model.Post.User.UserName class="WhiteHeader">@@@Model.Post.User.UserName</a>)
         
             <section class="dropright" style="float:right;">
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

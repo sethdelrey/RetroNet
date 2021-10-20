@@ -3,10 +3,10 @@
 @using _90sTest.Entities;
 @{ ViewData["Title"] = "Report User"; }
 
-<div class="card">
-    <div class="card-header">
+<div class="card card-tertiary">
+    <div class="card-header WhiteHeader">
 
-        @Model.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@Model.User.UserName>@@@Model.User.UserName</a>)
+        @Model.User.Name (<a asp-controller="Profile" asp-action="Index" asp-route-username=@Model.User.UserName class="WhiteHeader">@@@Model.User.UserName</a>)
         <div></div>
     </div>
         <div class="card-body card-text">

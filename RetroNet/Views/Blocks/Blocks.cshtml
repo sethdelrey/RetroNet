@@ -4,110 +4,107 @@
     ViewData["Title"] = "Blocks";
     var IsUsersProfile = Model.User.Id.Equals(User.GetLoggedInUserId<string>());
 }
-<div class="col-sm-9 mb-4 mb-lg-0 feed">
-    <div class="card">
-        <div class="card-header">
-            @Model.User.Name (@@@Model.User.UserName)
+<div class="card card-tertiary">
+    <div class="card-header WhiteHeader">
+        @Model.User.Name (@@@Model.User.UserName)
+    </div>
+    <div class="card-body card-text">
+        <div id="ViewBio">
+            @Model.User.Bio
         </div>
-        <div class="card-body card-text">
-            <div id="ViewBio">
-                @Model.User.Bio
-            </div>
-            <br />
-            <div>
-                <span>Blocking: @Model.BlockedCount</span>
-                <span>Blocked By: @Model.BlockeByCount</span>
-            </div>
-            <div class="d-flex justify-content-end mt-3">
+        <br />
+        <div>
+            <span>Blocking: @Model.BlockedCount</span>
+            <span>Blocked By: @Model.BlockeByCount</span>
+        </div>
+        <div class="d-flex justify-content-end mt-3">
 
-                @if (!IsUsersProfile)
-                {
-                    var blockParams = new Dictionary<string, string>()
+            @if (!IsUsersProfile)
+            {
+                var blockParams = new Dictionary<string, string>()
                                                                             {
                             { "userId", Model.User.Id }
                         };
-                    if (Model.IsBlocked)
-                    {
-                        <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="UnBlock" asp-controller="Profile" asp-all-route-data="blockParams">Unblock</a>
-                    }
-                    else
-                    {
-                        <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Block" asp-controller="Profile" asp-all-route-data="blockParams">Block</a>
-                    }
+                if (Model.IsBlocked)
+                {
+                    <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="UnBlock" asp-controller="Profile" asp-all-route-data="blockParams">Unblock</a>
                 }
-            </div>
+                else
+                {
+                    <a class="btn btn-sm mr-2 btn-primary border-dark" asp-action="Block" asp-controller="Profile" asp-all-route-data="blockParams">Block</a>
+                }
+            }
         </div>
     </div>
-    <br />
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" id="BlockedBy-tab" data-toggle="tab" href="#BlockedBy"
-               role="tab" aria-controls="BlockedBy" aria-selected="true">Blocked By</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="Blocking-tab" data-toggle="tab" href="#Blocking"
-               role="tab" aria-controls="Blocking" aria-selected="false">Blocking</a>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane show active" id="BlockedBy" role="tabpanel"
-             aria-labelledby="BlockedBy-tab">
-            @if (Model.BlockedByList.Count != 0)
+</div>
+<br />
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="BlockedBy-tab" data-toggle="tab" href="#BlockedBy"
+           role="tab" aria-controls="BlockedBy" aria-selected="true">Blocked By</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="Blocking-tab" data-toggle="tab" href="#Blocking"
+           role="tab" aria-controls="Blocking" aria-selected="false">Blocking</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane show active" id="BlockedBy" role="tabpanel"
+         aria-labelledby="BlockedBy-tab">
+        @if (Model.BlockedByList.Count != 0)
+        {
+            @foreach (_90sTest.Areas.Identity.Data.RetroNetUser user in Model.BlockedByList)
             {
-                @foreach (_90sTest.Areas.Identity.Data.RetroNetUser user in Model.BlockedByList)
-                {
-                    <div class="card card-tertiary">
-                        <div class="card-header">
-                            @user.Name (@@@user.UserName)
-                        </div>
-                        <div class="card-body bg-white">
-                            <p class="card-text">
-                                Common friends: 120<br>
-                                Posts: 10 <br>
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex">
-                                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-controller="Profile" asp-action="Index" asp-route-username=@user.UserName>View Profile</a>
-                            </div>
+                <div class="card card-tertiary">
+                    <div class="card-header">
+                        @user.Name (@@@user.UserName)
+                    </div>
+                    <div class="card-body bg-white">
+                        <p class="card-text">
+                            Common friends: 120<br>
+                            Posts: 10 <br>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex">
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-controller="Profile" asp-action="Index" asp-route-username=@user.UserName>View Profile</a>
                         </div>
                     </div>
-                    <br>
-                }
+                </div>
+                <br>
             }
-            else
+        }
+        else
+        {
+            <p>This user is not blocked by anyone.</p>
+        }
+    </div>
+    <div class="tab-pane" id="Blocking" role="tabpanel" aria-labelledby="Blocking-tab">
+        @if (Model.BlockedList.Count != 0)
+        {
+            @foreach (_90sTest.Areas.Identity.Data.RetroNetUser user in Model.BlockedList)
             {
-                <p>This user is not blocked by anyone.</p>
-            }
-        </div>
-        <div class="tab-pane" id="Blocking" role="tabpanel" aria-labelledby="Blocking-tab">
-            @if (Model.BlockedList.Count != 0)
-            {
-                @foreach (_90sTest.Areas.Identity.Data.RetroNetUser user in Model.BlockedList)
-                {
-                    <div class="card card-tertiary">
-                        <div class="card-header">
-                            @user.Name (@@@user.UserName)
-                        </div>
-                        <div class="card-body bg-white">
-                            <p class="card-text">
-                                Common friends: 120<br>
-                                Posts: 10 <br>
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <div class="d-flex">
-                                <a class="btn btn-sm mr-2 btn-primary border-dark" asp-controller="Profile" asp-action="Index" asp-route-username=@user.UserName>View Profile</a>
-                            </div>
+                <div class="card card-tertiary">
+                    <div class="card-header">
+                        @user.Name (@@@user.UserName)
+                    </div>
+                    <div class="card-body bg-white">
+                        <p class="card-text">
+                            @user.Bio
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex">
+                            <a class="btn btn-sm mr-2 btn-primary border-dark" asp-controller="Profile" asp-action="Index" asp-route-username=@user.UserName>View Profile</a>
                         </div>
                     </div>
-                    <br>
-                }
+                </div>
+                <br>
             }
-            else
-            {
-                <p>This user is not blocking anyone.</p>
-            }
-        </div>
+        }
+        else
+        {
+            <p>This user is not blocking anyone.</p>
+        }
     </div>
 </div>

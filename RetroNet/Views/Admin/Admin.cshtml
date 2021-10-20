@@ -4,53 +4,67 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts"
-           role="tab" aria-controls="posts" aria-selected="true">Posts</a>
+           role="tab" aria-controls="posts" aria-selected="true">Reported Posts</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="likes-tab" data-toggle="tab" href="#users"
-           role="tab" aria-controls="users" aria-selected="false">Users</a>
+        <a class="nav-link" id="users-tab" data-toggle="tab" href="#users"
+           role="tab" aria-controls="users" aria-selected="false">Reported Users</a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane show active" id="posts" role="tabpanel"
          aria-labelledby="posts-tab">
-        @foreach (_90sTest.Entities.ReportedPost reportedPost in Model.ReportedPosts)
+        @if (Model.ReportedPosts.Count() != 0)
         {
-            <div class="card">
-                <div class="card-header">
-                    <a asp-controller="Post" asp-action="Index" asp-route-postid="@reportedPost.PostId">@reportedPost.PostId</a>
-                </div>
-                <div class="card-body card-text">
-                    <div>Reporting User: <a asp-controller="Profile" asp-action="UserById" asp-route-userid=@reportedPost.ReportingUserId>@reportedPost.ReportingUserId</a></div>
-                    <div>Report Type: @reportedPost.Type</div>
-                    <div>Description: @reportedPost.Description</div>
+            foreach (_90sTest.Entities.ReportedPost reportedPost in Model.ReportedPosts)
+            {
+                <div class="card card-tertiary">
+                    <div class="card-header WhiteHeader">
+                        <a asp-controller="Post" asp-action="Index" asp-route-postid="@reportedPost.PostId" class="WhiteHeader">@reportedPost.PostId</a>
+                    </div>
+                    <div class="card-body card-text">
+                        <div>Reporting User: <a asp-controller="Profile" asp-action="UserById" asp-route-userid=@reportedPost.ReportingUserId>@reportedPost.ReportingUserId</a></div>
+                        <div>Report Type: @reportedPost.Type</div>
+                        <div>Description: @reportedPost.Description</div>
 
-                    <div class="d-flex justify-content-end mt-3">
-                        <time datetime="@reportedPost.ReportTime.ToString()" date-format="">@reportedPost.ReportTime.ToString()</time>
+                        <div class="d-flex justify-content-end mt-3">
+                            <time datetime="@reportedPost.ReportTime.ToString()" date-format="">@reportedPost.ReportTime.ToString()</time>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <br>
+                <br>
+            }
+        }
+        else
+        {
+            <div>No reported posts.</div>
         }
     </div>
     <div class="tab-pane" id="users" role="tabpanel" aria-labelledby="users-tab">
-        @foreach (_90sTest.Entities.ReportedUser reportedUser in Model.ReportedUsers)
+        @if (Model.ReportedUsers.Count() != 0)
         {
-            <div class="card">
-                <div class="card-header">
-                    <a asp-controller="Profile" asp-action="UserById" asp-route-userid=@reportedUser.UserId>@reportedUser.UserId</a>
-                </div>
-                <div class="card-body card-text">
-                    <div>Reporting User: <a asp-controller="Profile" asp-action="UserById" asp-route-userid=@reportedUser.ReportingUserId>@reportedUser.ReportingUserId</a></div>
-                    <div>Report Type: @reportedUser.Type</div>
-                    <div>Description: @reportedUser.Description</div>
+            foreach (_90sTest.Entities.ReportedUser reportedUser in Model.ReportedUsers)
+            {
+                <div class="card card-tertiary">
+                    <div class="card-header WhiteHeader">
+                        <a asp-controller="Profile" asp-action="UserById" asp-route-userid=@reportedUser.UserId class="WhiteHeader">@reportedUser.UserId</a>
+                    </div>
+                    <div class="card-body card-text">
+                        <div>Reporting User: <a asp-controller="Profile" asp-action="UserById" asp-route-userid=@reportedUser.ReportingUserId>@reportedUser.ReportingUserId</a></div>
+                        <div>Report Type: @reportedUser.Type</div>
+                        <div>Description: @reportedUser.Description</div>
 
-                    <div class="d-flex justify-content-end mt-3">
-                        <time datetime="@reportedUser.ReportTime.ToString()" date-format="">@reportedUser.ReportTime.ToString()</time>
+                        <div class="d-flex justify-content-end mt-3">
+                            <time datetime="@reportedUser.ReportTime.ToString()" date-format="">@reportedUser.ReportTime.ToString()</time>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <br>
+                <br>
+            }
+        }
+        else
+        {
+            <div>No reported users.</div>
         }
     </div>
 </div>

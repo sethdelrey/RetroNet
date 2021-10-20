@@ -76,3 +76,7 @@ a.dropdown-item:hover, a.dropdown-item::selection {
     border-color: black;
     border-width: 1px;
 }
+
+.WhiteHeader, a.WhiteHeader, a.WhiteHeader:hover, a.WhiteHeader:visited {
+    color: white;
+}

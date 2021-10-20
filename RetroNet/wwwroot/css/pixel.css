@@ -7044,28 +7044,28 @@ a:hover,
 
 .text-danger,
 .text-danger:hover {
-    color: #FA5252 !important;
+    color: #A10808 !important;
 }
 
-.text-danger a:not(.btn),
-.text-danger h1,
-.text-danger h2,
-.text-danger h3,
-.text-danger h4,
-.text-danger h5,
-.text-danger h6,
-.text-danger .h1,
-.text-danger .h2,
-.text-danger .h3,
-.text-danger .h4,
-.text-danger .h5,
-.text-danger .h6,
-.text-danger .display-1,
-.text-danger .display-2,
-.text-danger .display-3,
-.text-danger .display-4 {
-    color: #FA5252;
-}
+    .text-danger a:not(.btn),
+    .text-danger h1,
+    .text-danger h2,
+    .text-danger h3,
+    .text-danger h4,
+    .text-danger h5,
+    .text-danger h6,
+    .text-danger .h1,
+    .text-danger .h2,
+    .text-danger .h3,
+    .text-danger .h4,
+    .text-danger .h5,
+    .text-danger .h6,
+    .text-danger .display-1,
+    .text-danger .display-2,
+    .text-danger .display-3,
+    .text-danger .display-4 {
+        color: #A10808;
+    }
 
 .text-danger .text-muted {
     color: rgba(250, 82, 82, 0.7) !important;
