@@ -42,5 +42,15 @@ namespace _90sTest.Controllers
                 return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorDisplayMessage = "We are looking into the issue." });
             }
         }
+
+        public bool DeleteUser(string userId)
+        {
+            return false;
+        }
+
+        public bool DeletePost(string postId)
+        {
+            return false;
+        }
     }
 }

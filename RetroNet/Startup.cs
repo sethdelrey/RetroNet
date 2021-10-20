@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using _90sTest.Services;
+using _90sTest.DAL;
 
 namespace _90sTest
 {
@@ -28,8 +29,11 @@ namespace _90sTest
             // requires
             
             services.AddTransient<IEmailSender, EmailSender>();
+            
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.Configure<DBConfigOptions>(Configuration);
+
+            services.AddTransient<IPostRepository, PostRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
