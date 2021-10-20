@@ -27,7 +27,7 @@ namespace _90sTest.Controllers
         {
             try
             {
-                var postFind = _context.Posts.AsNoTracking().Where(p => p.PostId.Equals(postId)).Include(p => p.User).FirstOrDefault();
+                var postFind = _context.Posts.AsNoTracking().Where(p => p.PostId.Equals(postId)).Include(p => p.User).Include(p => p.LikedPosts).FirstOrDefault();
 
                 return View("Post", new PostModel() { Post = postFind} );
             }
