@@ -38,8 +38,8 @@ namespace _90sTest.Controllers
                 var data = new ProfileModel
                 {
                     User = _userManager.FindByNameAsync(username).Result,
-                    UsersPosts = _context.Posts.AsNoTracking().Where(p => p.User.UserName.Equals(username)).Include(p => p.User).OrderByDescending(p => p.Date).ToList(),
-                    UserLikedPosts = _context.Likes.AsNoTracking().Where(likes => likes.Liker.UserName.Equals(username)).Include(rat => rat.LikedPost.User).Select(likes => likes.LikedPost).OrderByDescending(p => p.Date).ToList(),
+                    UsersPosts = _context.Posts.AsNoTracking().Where(p => p.User.UserName.Equals(username)).Include(p => p.User).Include(p => p.LikedPosts).OrderByDescending(p => p.Date).ToList(),
+                    UserLikedPosts = _context.Likes.AsNoTracking().Where(likes => likes.Liker.UserName.Equals(username)).Include(rat => rat.LikedPost.User).Include(l => l.LikedPost.LikedPosts).Select(likes => likes.LikedPost).OrderByDescending(p => p.Date).ToList(),
                     IsBlocked = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId) && f.BlockerId.Equals(currentUserId)).ToList().Count != 0,
                     BlockeByCount = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(blockedUserId)).Count(),
                     BlockedCount = _context.Blocks.AsNoTracking().Where(f => f.BlockerId.Equals(blockedUserId)).Count()
@@ -60,30 +60,6 @@ namespace _90sTest.Controllers
         public IActionResult UserById(string userId)
         {
             return Index(_userManager.FindByIdAsync(userId).Result.UserName);
-            /*try
-            {
-                var currentUserId = User.GetLoggedInUserId<string>();
-
-                var data = new ProfileModel
-                {
-                    User = _userManager.FindByIdAsync(userId).Result,
-                    UsersPosts = _context.Posts.AsNoTracking().Where(p => p.User.Id.Equals(userId)).Select(p => p).OrderByDescending(p => p.Date).ToList(),
-                    UserLikedPosts = _context.Likes.AsNoTracking().Where(likes => likes.Liker.Id.Equals(userId)).Include(rat => rat.LikedPost.User).Select(likes => likes.LikedPost).OrderByDescending(p => p.Date).ToList(),
-                    IsBlocked = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(userId) && f.BlockerId.Equals(currentUserId)).ToList().Count != 0,
-                    BlockeByCount = _context.Blocks.AsNoTracking().Where(f => f.UserId.Equals(userId)).Count(),
-                    BlockedCount = _context.Blocks.AsNoTracking().Where(f => f.BlockerId.Equals(userId)).Count()
-                };
-
-                return View("Profile", data);
-            }
-            catch (NullReferenceException)
-            {
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorDisplayMessage = "That user does not exist, please check the userId and try again." });
-            }
-            catch
-            {
-                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, ErrorDisplayMessage = "We are looking into the issue." });
-            }*/
         }
 
         public IActionResult Block(string userId)
@@ -104,7 +80,7 @@ namespace _90sTest.Controllers
 
             }
 
-            return RedirectToAction("Profile", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
+            return RedirectToAction("Index", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
         }
 
         public IActionResult UnBlock(string userId)
@@ -126,7 +102,7 @@ namespace _90sTest.Controllers
                 }
             }
 
-            return RedirectToAction("Profile", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
+            return RedirectToAction("Index", new { username = _userManager.FindByIdAsync(blockedUserId).Result.UserName });
         }
     }
 
