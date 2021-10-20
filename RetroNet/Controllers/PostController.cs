@@ -29,6 +29,11 @@ namespace _90sTest.Controllers
             {
                 var postFind = _context.Posts.AsNoTracking().Where(p => p.PostId.Equals(postId)).Include(p => p.User).Include(p => p.LikedPosts).FirstOrDefault();
 
+                if (postFind == null)
+                {
+                    throw new NullReferenceException();
+                }
+
                 return View("Post", new PostModel() { Post = postFind} );
             }
             catch (NullReferenceException)

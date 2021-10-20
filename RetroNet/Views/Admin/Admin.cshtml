@@ -1,5 +1,5 @@
 ﻿@model AdminModel
-
+@{ ViewData["Title"] = "Admin"; }
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
@@ -21,6 +21,14 @@
                 <div class="card card-tertiary">
                     <div class="card-header WhiteHeader">
                         <a asp-controller="Post" asp-action="Index" asp-route-postid="@reportedPost.PostId" class="WhiteHeader">@reportedPost.PostId</a>
+                        <section class="dropright" style="float:right;">
+                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ...
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-controller="Admin" asp-action="DeletePost" asp-route-postId="@reportedPost.PostId">Delete Post</a>
+                            </div>
+                        </section>
                     </div>
                     <div class="card-body card-text">
                         <div>Reporting User: <a asp-controller="Profile" asp-action="UserById" asp-route-userid=@reportedPost.ReportingUserId>@reportedPost.ReportingUserId</a></div>
@@ -48,6 +56,14 @@
                 <div class="card card-tertiary">
                     <div class="card-header WhiteHeader">
                         <a asp-controller="Profile" asp-action="UserById" asp-route-userid=@reportedUser.UserId class="WhiteHeader">@reportedUser.UserId</a>
+                        <section class="dropright" style="float:right;">
+                            <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ...
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-controller="Admin" asp-action="DeleteUser" asp-route-userId="@reportedUser.UserId">Delete User</a>
+                            </div>
+                        </section>
                     </div>
                     <div class="card-body card-text">
                         <div>Reporting User: <a asp-controller="Profile" asp-action="UserById" asp-route-userid=@reportedUser.ReportingUserId>@reportedUser.ReportingUserId</a></div>

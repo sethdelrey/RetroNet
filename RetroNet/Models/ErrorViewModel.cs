@@ -8,7 +8,7 @@ namespace _90sTest.Models
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-        public string ErrorDisplayMessage { get; set; }
+        public string ErrorDisplayMessage = "We are looking into the issue.";
 
     }
 }
