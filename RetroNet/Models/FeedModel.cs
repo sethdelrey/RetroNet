@@ -6,7 +6,7 @@ namespace _90sTest.Models
 {
     public class FeedModel
     {
-        public Post[] Posts { get; set; }
+        public PaginatedList<Post> Posts { get; set; }
         
         // Top liked posts
         public Post[] HotPosts {get; set; }

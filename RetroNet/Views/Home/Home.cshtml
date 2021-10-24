@@ -43,6 +43,11 @@
     <div class="card-body bg-secondary">
         <div class="tab-content bg-secondary" id="homeTabContent">
             <div class="tab-pane show active" id="recent" role="tabpanel" aria-labelledby="recent-tab">
+                @{
+                    var prevDisabled = !Model.Posts.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model.Posts.HasNextPage ? "disabled" : "";
+                }
+
                 @foreach (Post post in Model.Posts)
                 {
                     var postModel = new PostModel() { Post = post };
@@ -50,6 +55,18 @@
                     <partial name="_PostPartial" model="postModel" />
                     <br>
                 }
+
+                <a asp-action="Index"
+                   asp-route-pageNumber="@(Model.Posts.PageIndex - 1)"
+                   class="btn btn-sm mr-2 btn-primary border-dark @prevDisabled">
+                    Previous
+                </a>
+                <a asp-action="Index"
+                   asp-route-pageNumber="@(Model.Posts.PageIndex + 1)"
+                   class="btn btn-sm mr-2 btn-primary border-dark @nextDisabled">
+                    Next
+                </a>
+
             </div>
             <div class="tab-pane" id="hot" role="tabpanel" aria-labelledby="hot-tab">
                 @foreach (Post post in Model.HotPosts)

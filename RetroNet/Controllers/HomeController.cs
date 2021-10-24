@@ -27,8 +27,10 @@ namespace _90sTest.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(
+            int? pageNumber)
         {
+            var pageSize = 25;
             var userId = User.GetLoggedInUserId<string>();
             var oneWeekAgo = DateTime.Now.AddDays(-1);
 
@@ -36,15 +38,15 @@ namespace _90sTest.Controllers
                 .Include(bl => bl.Blocker)
                 .Where(bl => bl.UserId.Equals(userId)).Select(bl => bl.Blocker.Id).ToList();
 
-           /* var likeList = _context.Likes.AsNoTracking()
-                .Where(l => l.LikerId.Equals(userId)).ToList();
-*/
-            var recentList = _context.Posts.AsNoTracking().Include(post => post.User).Include(post => post.LikedPosts).Where(post => !blockList.Any(bl => bl.Equals(post.User.Id))).ToList();
+            /* var likeList = _context.Likes.AsNoTracking()
+                 .Where(l => l.LikerId.Equals(userId)).ToList();
+ */
+            var recentList = _context.Posts.AsNoTracking().Include(post => post.User).Include(post => post.LikedPosts).Where(post => !blockList.Any(bl => bl.Equals(post.User.Id)));
 
-            var hotList = recentList.OrderByDescending(p => p.Likes).Take(25);
+            var hotList = recentList.OrderByDescending(p => p.Likes).Take(pageSize);
 
             var feed = new FeedModel() {
-                Posts = recentList.OrderByDescending(p => p.Date).ToArray(),
+                Posts = await PaginatedList<Post>.CreateAsync(recentList.OrderByDescending(p => p.Date), pageNumber ?? 1, pageSize),
                 HotPosts = hotList.ToArray()
             };
 
@@ -61,16 +63,11 @@ namespace _90sTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitAsync(FeedModel data)
         {
-            var userId = User.GetLoggedInUserId<string>(); // Specify the type of your UserId;
-
             RetroNetUser user = await _userManager.FindByIdAsync(User.GetLoggedInUserId<string>());
 
-            // Add new post to db
             _context.Posts.Add(new Post(data.NewPostContent, user, DateTime.Now));
             _context.SaveChanges();
             ModelState.Clear();
-            // Get posts and users from db
-            var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
             return RedirectToAction("Index");
         }
@@ -151,36 +148,6 @@ namespace _90sTest.Controllers
             }
         }
 
-        public IActionResult Like(string postId)
-        {
-            var loggedInUserId = User.GetLoggedInUserId<string>();
-            //var postIdInt = int.Parse(postId);
-            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId.Equals(postId)).ToArray();
-            if (postList != null && postList.Length != 0)
-            {
-                var count = _context.Likes.Select(likes => likes).Where(likes => likes.Liker.Id.Equals(loggedInUserId) && likes.LikedPostId.Equals(postId)).ToList().Count;
-                if (count == 0)
-                {
-                    postList[0].Likes++;
-                    _context.Posts.Update(postList[0]);
-
-
-                    _context.Likes.Add(new Likes()
-                    {
-                        LikerId = loggedInUserId,
-                        LikedPostId = postList[0].PostId
-
-                    });
-                }
-            }
-
-            _context.SaveChanges();
-
-            var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
-
-            return RedirectToAction("Index");
-        }
-
         public IActionResult Delete(string postId)
         {
             //var postIdInt = int.Parse(postId);
@@ -192,8 +159,6 @@ namespace _90sTest.Controllers
             }
 
             _context.SaveChanges();
-
-            var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
 
             return RedirectToAction("Index");
         }
