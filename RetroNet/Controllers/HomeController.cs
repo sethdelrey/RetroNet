@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using _90sTest.Data.Extension;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace _90sTest.Controllers
 {
@@ -20,11 +21,13 @@ namespace _90sTest.Controllers
     {
         private readonly UserManager<RetroNetUser> _userManager;
         private readonly RetroNetContext _context;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(UserManager<RetroNetUser> userManager, RetroNetContext context)
+        public HomeController(UserManager<RetroNetUser> userManager, RetroNetContext context, ILogger<HomeController> logger)
         {
             _userManager = userManager;
             _context = context;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -151,39 +154,8 @@ namespace _90sTest.Controllers
             }
         }
 
-        public IActionResult Like(string postId)
-        {
-            var loggedInUserId = User.GetLoggedInUserId<string>();
-            //var postIdInt = int.Parse(postId);
-            var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId.Equals(postId)).ToArray();
-            if (postList != null && postList.Length != 0)
-            {
-                var count = _context.Likes.Select(likes => likes).Where(likes => likes.Liker.Id.Equals(loggedInUserId) && likes.LikedPostId.Equals(postId)).ToList().Count;
-                if (count == 0)
-                {
-                    postList[0].Likes++;
-                    _context.Posts.Update(postList[0]);
-
-
-                    _context.Likes.Add(new Likes()
-                    {
-                        LikerId = loggedInUserId,
-                        LikedPostId = postList[0].PostId
-
-                    });
-                }
-            }
-
-            _context.SaveChanges();
-
-            var feed = new FeedModel() { Posts = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).OrderByDescending(p => p.Date).ToArray() };
-
-            return RedirectToAction("Index");
-        }
-
         public IActionResult Delete(string postId)
         {
-            //var postIdInt = int.Parse(postId);
             var postList = _context.Posts.Include(p => p.User).ThenInclude(p => p.LikedPosts).Select(p => p).Where(p => p.PostId.Equals(postId) && p.User.UserName == User.GetLoggedInUserName()).ToArray();
 
             if (postList != null && postList.Length != 0)
