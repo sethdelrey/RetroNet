@@ -80,3 +80,7 @@ a.dropdown-item:hover, a.dropdown-item::selection {
 .WhiteHeader, a.WhiteHeader, a.WhiteHeader:hover, a.WhiteHeader:visited {
     color: white;
 }
+
+.min-vh-100 {
+    min-height: 75vh !important;
+}

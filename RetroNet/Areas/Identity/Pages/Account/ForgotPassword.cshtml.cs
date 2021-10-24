@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using _90sTest.Data;
 
 namespace _90sTest.Areas.Identity.Pages.Account
 {
@@ -19,11 +20,13 @@ namespace _90sTest.Areas.Identity.Pages.Account
     {
         private readonly UserManager<RetroNetUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private RetroNetContext _context;
 
-        public ForgotPasswordModel(UserManager<RetroNetUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<RetroNetUser> userManager, IEmailSender emailSender, RetroNetContext context)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -41,14 +44,12 @@ namespace _90sTest.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)) || (user.PasswordResetTime.CompareTo(DateTime.Now) > 0))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(
@@ -61,6 +62,9 @@ namespace _90sTest.Areas.Identity.Pages.Account
                     Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                _context.Users.Find(user.Id).PasswordResetTime = DateTime.Now.AddHours(3);
+                _context.SaveChanges();
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

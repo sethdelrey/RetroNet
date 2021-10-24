@@ -27,11 +27,15 @@ namespace _90sTest.Areas.Identity.Data
         [MaxLength(256)]
         public string Bio { get; set; }
 
+        [DataType(DataType.Date)]
+        public DateTime PasswordResetTime { get; set; }
+
         public ICollection<Blocks> Followers { get; set; }
 
         public ICollection<Blocks> Following { get; set; }
 
         public ICollection<Likes> LikedPosts { get; set; }
+
 
         public override bool Equals(object obj)
         {
